@@ -1,18 +1,16 @@
-FROM maven:3.9.9-eclipse-temurin-17 AS build
-
+# Stage 1: Build Maven
+FROM maven:3.9-eclipse-temurin-17 AS builder
 WORKDIR /app
 
-COPY pom.xml .
-COPY src ./src
+# Copie le contenu du dossier courant dans /app
+COPY . .
 
-RUN mvn clean package -DskipTests
+# Si le pom.xml est dans un sous-dossier backend lors de la copie, on se déplace ou on lance mvn depuis ce dossier
+RUN mvn clean package -DskipTests -f pom.xml
 
-FROM eclipse-temurin:17-jre
-
+# Stage 2: Runtime
+FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
-
-COPY --from=build /app/target/*.jar app.jar
-
+COPY --from=builder /app/target/*.jar app.jar
 EXPOSE 8080
-
 ENTRYPOINT ["java", "-jar", "app.jar"]
