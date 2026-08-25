@@ -1,0 +1,857 @@
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+  <div class="hero-overlay"></div>
+
+
+  <div class="container hero-content">
+
+
+    <span class="hero-label">
+
+      JACMEL • HAÏTI • IMMOBILIER & INVESTISSEMENT
+
+    </span>
+
+
+    <h1>
+
+      Investir à Jacmel,
+
+      <span>
+        construire l'avenir.
+      </span>
+
+    </h1>
+
+
+    <p>
+
+      NovaImmo accompagne propriétaires,
+      acheteurs, investisseurs et partenaires
+      dans le développement d'opportunités
+      immobilières modernes à Jacmel.
+
+    </p>
+
+
+    <div class="hero-actions">
+
+
+      <a
+        routerLink="/properties"
+        class="btn btn-primary">
+
+        Découvrir nos propriétés
+
+      </a>
+
+
+      <a
+        routerLink="/projects"
+        class="btn btn-outline">
+
+        Opportunités d'investissement
+
+      </a>
+
+
+    </div>
+
+
+    <div class="hero-location">
+
+
+      <div class="location-dot"></div>
+
+
+      <div>
+
+        <small>
+          SIÈGE SOCIAL
+        </small>
+
+        <strong>
+          Jacmel, Sud-Est, Haïti
+        </strong>
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     RECHERCHE
+========================================================= -->
+
+<section class="search-section">
+
+  <div class="container">
+
+
+    <div class="search-box">
+
+
+      <div class="field">
+
+        <label for="propertyType">
+          Type
+        </label>
+
+
+        <select id="propertyType">
+
+          <option value="">
+            Tous les biens
+          </option>
+
+          <option value="HOUSE">
+            Maison
+          </option>
+
+          <option value="VILLA">
+            Villa
+          </option>
+
+          <option value="APARTMENT">
+            Appartement
+          </option>
+
+          <option value="LAND">
+            Terrain
+          </option>
+
+          <option value="COMMERCIAL">
+            Local commercial
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="field">
+
+        <label for="location">
+          Localisation
+        </label>
+
+
+        <select id="location">
+
+          <option value="">
+            Tout Jacmel
+          </option>
+
+          <option value="Centre-ville">
+            Centre-ville
+          </option>
+
+          <option value="Cyvadier">
+            Cyvadier
+          </option>
+
+          <option value="Route de Marigot">
+            Route de Marigot
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="field">
+
+        <label for="budget">
+          Budget
+        </label>
+
+
+        <select id="budget">
+
+          <option value="">
+            Budget maximum
+          </option>
+
+          <option value="100000">
+            100 000 $
+          </option>
+
+          <option value="250000">
+            250 000 $
+          </option>
+
+          <option value="500000">
+            500 000 $
+          </option>
+
+          <option value="1000000">
+            1 000 000 $+
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="search-button">
+
+        Rechercher
+
+      </button>
+
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     STATISTIQUES
+========================================================= -->
+
+<section class="stats">
+
+  <div class="container stats-grid">
+
+
+    <div class="stat">
+
+      <strong>
+        120+
+      </strong>
+
+      <span>
+        Opportunités immobilières
+      </span>
+
+    </div>
+
+
+    <div class="stat">
+
+      <strong>
+        35+
+      </strong>
+
+      <span>
+        Projets accompagnés
+      </span>
+
+    </div>
+
+
+    <div class="stat">
+
+      <strong>
+        250+
+      </strong>
+
+      <span>
+        Clients & partenaires
+      </span>
+
+    </div>
+
+
+    <div class="stat">
+
+      <strong class="jacmel-stat">
+        Jacmel
+      </strong>
+
+      <span>
+        Notre siège social
+      </span>
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     PROPRIETES EN VEDETTE
+========================================================= -->
+
+<section class="section properties-section">
+
+  <div class="container">
+
+
+    <div class="section-heading">
+
+
+      <div>
+
+        <span class="section-label">
+          NOTRE SÉLECTION
+        </span>
+
+        <h2>
+          Propriétés en vedette
+        </h2>
+
+      </div>
+
+
+      <a
+        routerLink="/properties"
+        class="section-link">
+
+        Voir toutes les propriétés →
+
+      </a>
+
+
+    </div>
+
+
+
+    <!-- Chargement -->
+
+    @if (loading) {
+
+    <div class="loading-state">
+
+      <p>
+        Chargement des propriétés...
+      </p>
+
+    </div>
+
+    }
+
+
+    <!-- Erreur -->
+
+    @else if (errorMessage) {
+
+    <div class="error-state">
+
+      <p>
+        {{ errorMessage }}
+      </p>
+
+    </div>
+
+    }
+
+
+    <!-- Liste vide -->
+
+    @else if (properties.length === 0) {
+
+    <div class="empty-state">
+
+      <p>
+        Aucune propriété disponible actuellement.
+      </p>
+
+    </div>
+
+    }
+
+
+    <!-- Propriétés -->
+
+    @else {
+
+    <div class="properties-grid">
+
+
+      @for (
+      property of properties;
+      track property.id
+      ) {
+
+
+      <article class="property-card">
+
+
+        <!-- IMAGE -->
+
+        <a
+          [routerLink]="[
+                '/properties',
+                property.id
+              ]"
+          class="property-image">
+
+
+
+          <img
+            [src]="imageUrl(property)"
+            [alt]="property.titre">
+
+
+          <span class="property-badge">
+
+                {{
+                  getTransactionLabel(
+                    property.transactionType
+                  )
+                }}
+
+              </span>
+
+
+        </a>
+
+
+
+        <!-- CONTENU -->
+
+        <div class="property-content">
+
+
+          <!-- TYPE / PRIX -->
+
+          <div class="property-top">
+
+
+                <span>
+
+                  {{ property.typeNom }}
+
+                </span>
+
+
+            <strong>
+
+              {{
+              formatPrice(
+              property.prix,
+              property.devise
+              )
+              }}
+
+            </strong>
+
+
+          </div>
+
+
+
+          <!-- TITRE -->
+
+          <h3>
+
+
+            <a
+              [routerLink]="[
+                    '/properties',
+                    property.id
+                  ]">
+
+              {{ property.titre }}
+
+            </a>
+
+
+          </h3>
+
+
+
+          <!-- LOCALISATION -->
+
+          <p class="property-location">
+
+            📍
+
+            @if (property.quartier) {
+
+            {{ property.quartier }},
+
+            }
+
+            {{ property.ville }}
+
+          </p>
+
+
+
+          <!-- CARACTERISTIQUES -->
+
+          <div class="property-details">
+
+
+            @if (property.chambres > 0) {
+
+            <span>
+
+                    {{ property.chambres }}
+                    chambres
+
+                  </span>
+
+            }
+
+
+            @if (property.sallesBain > 0) {
+
+            <span>
+
+                    {{ property.sallesBain }}
+                    salles de bain
+
+                  </span>
+
+            }
+
+
+            @if (property.superficie) {
+
+            <span>
+
+                    {{ property.superficie }}
+                    m²
+
+                  </span>
+
+            }
+
+
+          </div>
+
+
+
+          <a
+            [routerLink]="[
+                  '/properties',
+                  property.id
+                ]"
+            class="property-details-link">
+
+            Voir la propriété →
+
+          </a>
+
+
+        </div>
+
+
+      </article>
+
+
+      }
+
+
+    </div>
+
+    }
+
+
+  </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     JACMEL
+========================================================= -->
+
+<section class="jacmel-section">
+
+  <div class="container jacmel-grid">
+
+
+    <div class="jacmel-photo">
+
+
+      <div class="jacmel-title">
+
+        <small>
+          NOTRE ANCRAGE
+        </small>
+
+        <strong>
+          Jacmel
+        </strong>
+
+        <span>
+          Sud-Est • Haïti
+        </span>
+
+      </div>
+
+
+    </div>
+
+
+
+    <div class="jacmel-content">
+
+
+      <span class="section-label">
+
+        POURQUOI JACMEL ?
+
+      </span>
+
+
+      <h2>
+
+        Une entreprise immobilière
+        profondément ancrée
+        dans son territoire.
+
+      </h2>
+
+
+      <p>
+
+        NovaImmo souhaite connecter les
+        opportunités immobilières de Jacmel
+        avec les propriétaires, acheteurs,
+        entrepreneurs, investisseurs et
+        membres de la diaspora.
+
+      </p>
+
+
+      <p>
+
+        Notre présence locale permet de mieux
+        comprendre le marché, d'identifier
+        les opportunités et d'accompagner
+        nos partenaires directement
+        sur le terrain.
+
+      </p>
+
+
+
+      <div class="jacmel-points">
+
+
+        <div>
+
+          <strong>
+            01
+          </strong>
+
+          <span>
+            Connaissance locale
+          </span>
+
+        </div>
+
+
+        <div>
+
+          <strong>
+            02
+          </strong>
+
+          <span>
+            Opportunités foncières
+          </span>
+
+        </div>
+
+
+        <div>
+
+          <strong>
+            03
+          </strong>
+
+          <span>
+            Développement immobilier
+          </span>
+
+        </div>
+
+
+        <div>
+
+          <strong>
+            04
+          </strong>
+
+          <span>
+            Réseau de partenaires
+          </span>
+
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     CARTE JACMEL
+========================================================= -->
+
+<section class="map-section">
+
+  <div class="container">
+
+
+    <div class="map-heading">
+
+
+      <span class="section-label">
+
+        NOTRE LOCALISATION
+
+      </span>
+
+
+      <h2>
+
+        Retrouvez NovaImmo à Jacmel
+
+      </h2>
+
+
+      <p>
+
+        Notre siège social est implanté
+        dans le département du Sud-Est
+        d'Haïti.
+
+      </p>
+
+
+    </div>
+
+
+
+    <div class="map-container">
+
+
+      <iframe
+        src="https://www.openstreetmap.org/export/embed.html?bbox=-72.5700%2C18.2100%2C-72.5000%2C18.2600&layer=mapnik&marker=18.2343%2C-72.5354"
+        loading="lazy"
+        title="Localisation NovaImmo à Jacmel">
+      </iframe>
+
+
+
+      <div class="map-card">
+
+
+        <span>
+          SIÈGE SOCIAL
+        </span>
+
+
+        <h3>
+          NovaImmo
+        </h3>
+
+
+        <p>
+
+          Jacmel
+
+          <br>
+
+          Sud-Est, Haïti
+
+        </p>
+
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     PARTENAIRES / INVESTISSEURS
+========================================================= -->
+
+<section class="investment">
+
+  <div class="container investment-grid">
+
+
+    <div>
+
+
+      <span>
+
+        PARTENAIRES & INVESTISSEURS
+
+      </span>
+
+
+      <h2>
+
+        Construisons ensemble
+        de nouvelles opportunités
+        immobilières à Jacmel.
+
+      </h2>
+
+
+    </div>
+
+
+
+    <div>
+
+
+      <p>
+
+        NovaImmo souhaite réunir propriétaires,
+        investisseurs, promoteurs et partenaires
+        institutionnels autour de projets
+        structurés et durables.
+
+      </p>
+
+
+      <a
+        routerLink="/contact"
+        class="btn btn-gold">
+
+        Devenir partenaire
+
+      </a>
+
+
+    </div>
+
+
+  </div>
+
+</section>

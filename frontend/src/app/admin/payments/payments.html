@@ -1,0 +1,239 @@
+<section class="admin-payments-page">
+
+  <div class="container">
+
+
+    <header class="page-header">
+
+      <div>
+
+        <span class="eyebrow">
+          ADMINISTRATION
+        </span>
+
+        <h1>
+          Paiements
+        </h1>
+
+        <p>
+          Consultez les paiements
+          associés aux transactions NovaImmo.
+        </p>
+
+      </div>
+
+
+      <a
+        routerLink="/admin"
+        class="back-button">
+
+        Retour dashboard
+
+      </a>
+
+    </header>
+
+
+    @if (loading) {
+
+    <div class="state">
+      Chargement des paiements...
+    </div>
+
+    }
+
+    @else if (errorMessage) {
+
+    <div class="state error">
+
+      <p>
+        {{ errorMessage }}
+      </p>
+
+      <button
+        type="button"
+        class="retry-button"
+        (click)="loadPayments()">
+
+        Réessayer
+
+      </button>
+
+    </div>
+
+    }
+
+    @else if (payments.length === 0) {
+
+    <div class="state">
+      Aucun paiement disponible.
+    </div>
+
+    }
+
+    @else {
+
+    <div class="payments-summary">
+
+      {{ payments.length }}
+      paiement(s)
+
+    </div>
+
+
+    <section class="payments-list">
+
+      @for (
+      payment of payments;
+      track payment.id
+      ) {
+
+      <article class="payment-card">
+
+
+        <div class="payment-header">
+
+          <div>
+
+                <span class="reference">
+                  {{ payment.reference }}
+                </span>
+
+            <h2>
+              {{ payment.transactionReference }}
+            </h2>
+
+          </div>
+
+
+          <span
+            [class]="
+                  'status '
+                  + getStatusClass(
+                      payment.statut
+                    )
+                ">
+
+                {{
+                  getStatusLabel(
+                    payment.statut
+                  )
+                }}
+
+              </span>
+
+        </div>
+
+
+        <div class="payment-details">
+
+
+          <div class="detail-item">
+
+                <span class="detail-label">
+                  Montant
+                </span>
+
+            <strong>
+
+              {{
+              formatAmount(
+              payment.montant,
+              payment.devise
+              )
+              }}
+
+            </strong>
+
+          </div>
+
+
+          <div class="detail-item">
+
+                <span class="detail-label">
+                  Mode de paiement
+                </span>
+
+            <strong>
+              {{ payment.modePaiement }}
+            </strong>
+
+          </div>
+
+
+          <div class="detail-item">
+
+                <span class="detail-label">
+                  Transaction
+                </span>
+
+            <strong>
+              #{{ payment.transactionId }}
+            </strong>
+
+          </div>
+
+
+          <div class="detail-item">
+
+                <span class="detail-label">
+                  Date du paiement
+                </span>
+
+            <strong>
+
+              @if (payment.datePaiement) {
+
+              {{
+              payment.datePaiement
+              | date:'dd/MM/yyyy à HH:mm'
+              }}
+
+              }
+
+              @else {
+
+              Non renseignée
+
+              }
+
+            </strong>
+
+          </div>
+
+
+        </div>
+
+
+        <footer class="payment-footer">
+
+              <span>
+                Paiement #{{ payment.id }}
+              </span>
+
+          <span>
+
+                Créé le
+
+                {{
+                  payment.createdAt
+                  | date:'dd/MM/yyyy'
+                }}
+
+              </span>
+
+        </footer>
+
+
+      </article>
+
+      }
+
+    </section>
+
+    }
+
+
+  </div>
+
+</section>

@@ -1,0 +1,224 @@
+<section class="agent-page">
+
+  <div class="container">
+
+
+    <header class="agent-header">
+
+      <div>
+
+        <span class="eyebrow">
+          ESPACE AGENT
+        </span>
+
+        <h1>
+          Bonjour {{ currentUser()?.nom }}
+        </h1>
+
+        <p>
+          Retrouvez les visites,
+          rendez-vous et transactions
+          qui vous sont assignés.
+        </p>
+
+      </div>
+
+    </header>
+
+
+    @if (loading) {
+
+    <div class="state">
+      Chargement du tableau de bord...
+    </div>
+
+    }
+
+    @else if (errorMessage) {
+
+    <div class="state error">
+      {{ errorMessage }}
+    </div>
+
+    }
+
+    @else {
+
+
+    <!-- STATISTIQUES -->
+
+    <section class="stats-grid">
+
+
+      <article class="stat-card">
+
+        <div class="stat-icon">
+          🔑
+        </div>
+
+        <div>
+
+            <span>
+              Visites assignées
+            </span>
+
+          <strong>
+            {{ stats.assignedVisits }}
+          </strong>
+
+        </div>
+
+      </article>
+
+
+      <article class="stat-card">
+
+        <div class="stat-icon">
+          📅
+        </div>
+
+        <div>
+
+            <span>
+              Rendez-vous
+            </span>
+
+          <strong>
+            {{ stats.assignedAppointments }}
+          </strong>
+
+        </div>
+
+      </article>
+
+
+      <article class="stat-card">
+
+        <div class="stat-icon">
+          🤝
+        </div>
+
+        <div>
+
+            <span>
+              Transactions
+            </span>
+
+          <strong>
+            {{ stats.assignedTransactions }}
+          </strong>
+
+        </div>
+
+      </article>
+
+
+      <article class="stat-card">
+
+        <div class="stat-icon">
+          📈
+        </div>
+
+        <div>
+
+            <span>
+              En négociation
+            </span>
+
+          <strong>
+            {{ stats.activeTransactions }}
+          </strong>
+
+        </div>
+
+      </article>
+
+
+    </section>
+
+
+    <!-- MODULES -->
+
+    <section class="modules-grid">
+
+
+      <a
+        routerLink="/agent/visits"
+        class="module-card">
+
+          <span class="module-icon">
+            🔑
+          </span>
+
+        <div>
+
+          <h2>
+            Mes visites
+          </h2>
+
+          <p>
+            Consultez et gérez
+            les visites qui vous sont assignées.
+          </p>
+
+        </div>
+
+      </a>
+
+
+      <a
+        routerLink="/agent/appointments"
+        class="module-card">
+
+          <span class="module-icon">
+            📅
+          </span>
+
+        <div>
+
+          <h2>
+            Mes rendez-vous
+          </h2>
+
+          <p>
+            Retrouvez les rendez-vous
+            clients qui vous sont attribués.
+          </p>
+
+        </div>
+
+      </a>
+
+
+      <a
+        routerLink="/agent/transactions"
+        class="module-card">
+
+          <span class="module-icon">
+            🤝
+          </span>
+
+        <div>
+
+          <h2>
+            Mes transactions
+          </h2>
+
+          <p>
+            Suivez les négociations
+            et opérations immobilières.
+          </p>
+
+        </div>
+
+      </a>
+
+
+    </section>
+
+    }
+
+
+  </div>
+
+</section>

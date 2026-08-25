@@ -1,0 +1,313 @@
+<section class="visit-page">
+
+  <div class="container">
+
+
+    @if (loadingProperty) {
+
+    <div class="state-box">
+
+      Chargement de la propriété...
+
+    </div>
+
+    }
+
+
+    @else if (property) {
+
+    <div class="visit-grid">
+
+
+      <!-- PROPRIETE -->
+
+      <aside class="property-summary">
+
+
+        <div class="property-image">
+
+          <img
+            [src]="getPropertyImage()"
+            [alt]="property.titre">
+
+        </div>
+
+
+        <div class="summary-content">
+
+            <span class="label">
+              PROPRIÉTÉ À VISITER
+            </span>
+
+
+          <h1>
+
+            {{ property.titre }}
+
+          </h1>
+
+
+          <p class="location">
+
+            📍
+
+            @if (property.quartier) {
+
+            {{ property.quartier }},
+
+            }
+
+            {{ property.ville }}
+
+          </p>
+
+
+          <div class="summary-details">
+
+              <span>
+                {{ property.typeNom }}
+              </span>
+
+            <span>
+                {{ property.superficie }}
+                m²
+              </span>
+
+            @if (property.chambres > 0) {
+
+            <span>
+                  {{ property.chambres }}
+                  chambres
+                </span>
+
+            }
+
+          </div>
+
+
+          <a
+            [routerLink]="[
+                '/properties',
+                property.id
+              ]">
+
+            ← Retour à la propriété
+
+          </a>
+
+        </div>
+
+
+      </aside>
+
+
+
+      <!-- FORMULAIRE -->
+
+      <div class="visit-form-card">
+
+
+          <span class="section-label">
+
+            PLANIFIER UNE VISITE
+
+          </span>
+
+
+        <h2>
+
+          Choisissez le moment
+          qui vous convient.
+
+        </h2>
+
+
+        <p class="intro">
+
+          Envoyez votre demande.
+          L'équipe NovaImmo pourra ensuite
+          confirmer ou reporter le rendez-vous.
+
+        </p>
+
+
+        @if (successMessage) {
+
+        <div class="success-message">
+
+          {{ successMessage }}
+
+        </div>
+
+        }
+
+
+        @if (errorMessage) {
+
+        <div class="error-message">
+
+          {{ errorMessage }}
+
+        </div>
+
+        }
+
+
+        <form
+          [formGroup]="visitForm"
+          (ngSubmit)="submit()">
+
+
+          <div class="form-group">
+
+            <label for="nomVisiteur">
+              Nom complet *
+            </label>
+
+            <input
+              id="nomVisiteur"
+              type="text"
+              formControlName="nomVisiteur"
+              placeholder="Votre nom">
+
+            @if (
+            visitForm.controls.nomVisiteur.touched &&
+            visitForm.controls.nomVisiteur.invalid
+            ) {
+
+            <small class="field-error">
+
+              Le nom est obligatoire.
+
+            </small>
+
+            }
+
+          </div>
+
+
+
+          <div class="form-row">
+
+
+            <div class="form-group">
+
+              <label for="email">
+                Email *
+              </label>
+
+              <input
+                id="email"
+                type="email"
+                formControlName="email"
+                placeholder="email@example.com">
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="telephone">
+                Téléphone *
+              </label>
+
+              <input
+                id="telephone"
+                type="tel"
+                formControlName="telephone"
+                placeholder="+509 ...">
+
+            </div>
+
+
+          </div>
+
+
+
+          <div class="form-row">
+
+
+            <div class="form-group">
+
+              <label for="dateVisite">
+                Date et heure *
+              </label>
+
+              <input
+                id="dateVisite"
+                type="datetime-local"
+                formControlName="dateVisite">
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="nombrePersonnes">
+                Nombre de personnes
+              </label>
+
+              <input
+                id="nombrePersonnes"
+                type="number"
+                min="1"
+                formControlName="nombrePersonnes">
+
+            </div>
+
+
+          </div>
+
+
+
+          <div class="form-group">
+
+            <label for="commentaire">
+              Commentaire
+            </label>
+
+            <textarea
+              id="commentaire"
+              rows="5"
+              formControlName="commentaire"
+              placeholder="Une précision concernant votre visite...">
+              </textarea>
+
+          </div>
+
+
+
+          <button
+            type="submit"
+            class="submit-button"
+            [disabled]="submitting">
+
+            @if (submitting) {
+
+            Envoi en cours...
+
+            }
+
+            @else {
+
+            Envoyer la demande de visite
+
+            }
+
+          </button>
+
+
+        </form>
+
+
+      </div>
+
+
+    </div>
+
+    }
+
+
+  </div>
+
+</section>

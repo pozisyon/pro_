@@ -1,0 +1,345 @@
+:host {
+  display: block;
+
+  --dark: #081b18;
+  --green: #176653;
+  --green-light: #eaf4f0;
+  --gold: #d8aa4f;
+  --background: #f7f8f5;
+  --text: #18231f;
+  --text-light: #6b7672;
+  --border: #e2e7e4;
+}
+
+
+.appointment-page {
+  min-height: 100vh;
+
+  padding:
+    140px 0 100px;
+
+  background:
+    var(--background);
+}
+
+
+.container {
+  width:
+    min(1100px, 90%);
+
+  margin: auto;
+}
+
+
+.appointment-grid {
+  display: grid;
+
+  grid-template-columns:
+    0.85fr 1.15fr;
+
+  gap: 55px;
+
+  align-items: start;
+}
+
+
+/* LEFT */
+
+.appointment-info {
+  position: sticky;
+
+  top: 30px;
+
+  padding:
+    45px 10px;
+}
+
+
+.section-label {
+  display: inline-block;
+
+  margin-bottom: 14px;
+
+  color: var(--green);
+
+  font-size: 0.67rem;
+
+  font-weight: 700;
+
+  letter-spacing: 1.8px;
+}
+
+
+.appointment-info h1 {
+  margin-bottom: 25px;
+
+  font-family:
+    Georgia,
+    serif;
+
+  font-size:
+    clamp(2.7rem, 5vw, 4.4rem);
+
+  line-height: 1.08;
+}
+
+
+.intro {
+  margin-bottom: 35px;
+
+  color: var(--text-light);
+
+  line-height: 1.8;
+}
+
+
+.appointment-types div {
+  padding:
+    17px 0;
+
+  display: flex;
+
+  gap: 20px;
+
+  border-bottom:
+    1px solid var(--border);
+}
+
+
+.appointment-types strong {
+  color: var(--gold);
+}
+
+
+.appointment-types span {
+  font-size: 0.86rem;
+}
+
+
+.office {
+  margin-top: 35px;
+
+  padding: 25px;
+
+  background: var(--dark);
+
+  color: white;
+
+  border-radius: 15px;
+}
+
+
+.office small {
+  display: block;
+
+  color: var(--gold);
+
+  font-size: 0.62rem;
+
+  letter-spacing: 1.5px;
+}
+
+
+.office strong {
+  display: block;
+
+  margin:
+    6px 0;
+
+  font-family:
+    Georgia,
+    serif;
+
+  font-size: 1.5rem;
+}
+
+
+.office p {
+  color:
+    rgba(255, 255, 255, 0.65);
+
+  font-size: 0.82rem;
+}
+
+
+/* FORM */
+
+.appointment-card {
+  padding: 45px;
+
+  background: white;
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 15px 40px
+    rgba(0, 0, 0, 0.07);
+}
+
+
+.appointment-card h2 {
+  margin-bottom: 13px;
+
+  font-family:
+    Georgia,
+    serif;
+
+  font-size:
+    clamp(2rem, 4vw, 3rem);
+}
+
+
+.form-intro {
+  margin-bottom: 35px;
+
+  color: var(--text-light);
+}
+
+
+.form-row {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: 18px;
+}
+
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+
+.form-group label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-size: 0.78rem;
+
+  font-weight: 600;
+}
+
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+
+  padding:
+    14px 15px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 8px;
+
+  background: white;
+
+  outline: none;
+
+  font-family: inherit;
+}
+
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--green);
+}
+
+
+.field-error {
+  display: block;
+
+  margin-top: 6px;
+
+  color: #a33d3d;
+}
+
+
+.submit-button {
+  width: 100%;
+
+  min-height: 54px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background: var(--gold);
+
+  color: var(--dark);
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+.submit-button:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+}
+
+
+.success-message,
+.error-message {
+  margin-bottom: 25px;
+
+  padding: 15px;
+
+  border-radius: 8px;
+}
+
+
+.success-message {
+  background: #e8f5ee;
+
+  color: #176653;
+}
+
+
+.error-message {
+  background: #f8eaea;
+
+  color: #9b3636;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 850px) {
+
+  .appointment-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .appointment-info {
+    position: static;
+
+    padding:
+      10px 0;
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .appointment-page {
+    padding-top: 115px;
+  }
+
+  .appointment-card {
+    padding:
+      30px 20px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+}

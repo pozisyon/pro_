@@ -1,0 +1,306 @@
+<section class="admin-appointments-page">
+
+  <div class="container">
+
+
+    <header class="page-header">
+
+      <div>
+
+        <span class="eyebrow">
+          ADMINISTRATION
+        </span>
+
+        <h1>
+          Gestion des rendez-vous
+        </h1>
+
+        <p>
+          Consultez les demandes
+          et assignez-les aux agents.
+        </p>
+
+      </div>
+
+
+      <a
+        routerLink="/admin"
+        class="back-button">
+
+        Retour dashboard
+
+      </a>
+
+    </header>
+
+
+    @if (successMessage) {
+
+    <div class="message success">
+      {{ successMessage }}
+    </div>
+
+    }
+
+
+    @if (errorMessage) {
+
+    <div class="message error">
+      {{ errorMessage }}
+    </div>
+
+    }
+
+
+    @if (loading) {
+
+    <div class="state">
+      Chargement des rendez-vous...
+    </div>
+
+    }
+
+    @else if (
+    appointments.length === 0
+    ) {
+
+    <div class="state">
+      Aucun rendez-vous disponible.
+    </div>
+
+    }
+
+    @else {
+
+    <section class="appointments-list">
+
+
+      @for (
+      appointment of appointments;
+      track appointment.id
+      ) {
+
+      <article class="appointment-card">
+
+
+        <!-- ===============================
+             INFORMATIONS
+        ================================ -->
+
+        <div class="appointment-main">
+
+              <span class="reference">
+
+                RENDEZ-VOUS
+                #{{ appointment.id }}
+
+              </span>
+
+
+          <h2>
+            {{ appointment.sujet }}
+          </h2>
+
+
+          <p class="contact">
+
+            {{ appointment.nomContact }}
+
+            •
+
+            {{ appointment.email }}
+
+          </p>
+
+
+          <div class="appointment-details">
+
+                <span>
+
+                  📅
+
+                  {{
+                    appointment.dateDebut
+                    | date:'dd/MM/yyyy à HH:mm'
+                  }}
+
+                </span>
+
+
+            @if (
+            appointment.dateFin
+            ) {
+
+            <span>
+
+                    ⏱️ jusqu'à
+
+                    {{
+                      appointment.dateFin
+                      | date:'HH:mm'
+                    }}
+
+                  </span>
+
+            }
+
+
+            <span>
+
+                  📍
+
+                  {{
+                    appointment.lieu
+                    || 'Lieu non défini'
+                  }}
+
+                </span>
+
+
+          </div>
+
+
+          @if (
+          appointment.telephone
+          ) {
+
+          <p class="telephone">
+
+            📞
+            {{ appointment.telephone }}
+
+          </p>
+
+          }
+
+
+          @if (
+          appointment.notes
+          ) {
+
+          <p class="notes">
+
+            {{ appointment.notes }}
+
+          </p>
+
+          }
+
+        </div>
+
+
+        <!-- ===============================
+             ACTIONS ADMIN
+        ================================ -->
+
+        <div class="appointment-actions">
+
+
+              <span
+                [class]="
+                  'status '
+                  + getStatusClass(
+                      appointment.statut
+                    )
+                ">
+
+                {{
+                  getStatusLabel(
+                    appointment.statut
+                  )
+                }}
+
+              </span>
+
+
+          <p class="current-agent">
+
+            Agent actuel :
+
+            <strong>
+
+              {{
+              getAgentName(
+              appointment.agentId
+              )
+              }}
+
+            </strong>
+
+          </p>
+
+
+          <select
+            [(ngModel)]="
+                  selectedAgents[
+                    appointment.id
+                  ]
+                ">
+
+            <option
+              [ngValue]="null">
+
+              Choisir un agent
+
+            </option>
+
+
+            @for (
+            agent of agents;
+            track agent.id
+            ) {
+
+            <option
+              [ngValue]="agent.id">
+
+              {{ agent.prenom }}
+              {{ agent.nom }}
+
+            </option>
+
+            }
+
+          </select>
+
+
+          <button
+            type="button"
+            (click)="
+                  assignAgent(
+                    appointment
+                  )
+                ">
+
+            @if (
+            appointment.agentId
+            ) {
+
+            Réassigner
+
+            }
+
+            @else {
+
+            Assigner
+
+            }
+
+          </button>
+
+
+        </div>
+
+
+      </article>
+
+      }
+
+
+    </section>
+
+    }
+
+
+  </div>
+
+</section>

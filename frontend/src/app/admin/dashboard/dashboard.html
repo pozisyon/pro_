@@ -1,0 +1,777 @@
+<section class="admin-page">
+
+  <div class="container">
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="admin-header">
+
+      <div>
+
+        <span class="eyebrow">
+          ADMINISTRATION NOVAIMMO
+        </span>
+
+        <h1>
+          Bonjour {{ currentUser()?.nom }}
+        </h1>
+
+        <p>
+          Supervisez les utilisateurs,
+          les propriétés et l'ensemble
+          des opérations immobilières NovaImmo.
+        </p>
+
+      </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         CHARGEMENT
+    ====================================================== -->
+
+    @if (loading) {
+
+    <div class="state">
+
+      Chargement du tableau de bord...
+
+    </div>
+
+    }
+
+
+    <!-- =====================================================
+         ERREUR
+    ====================================================== -->
+
+    @else if (errorMessage) {
+
+    <div class="state error">
+
+      <p>
+        {{ errorMessage }}
+      </p>
+
+      <button
+        type="button"
+        class="retry-button"
+        (click)="loadDashboard()">
+
+        Réessayer
+
+      </button>
+
+    </div>
+
+    }
+
+
+    <!-- =====================================================
+         DASHBOARD
+    ====================================================== -->
+
+    @else {
+
+
+    <!-- ===================================================
+         STATISTIQUES PRINCIPALES
+    ==================================================== -->
+
+    <section class="dashboard-section">
+
+      <div class="section-header">
+
+        <div>
+
+            <span class="eyebrow">
+              VUE GLOBALE
+            </span>
+
+          <h2>
+            Activité NovaImmo
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <section class="stats-grid">
+
+
+        <!-- PROPRIÉTÉS -->
+
+        <a
+          routerLink="/admin/properties"
+          class="stat-card">
+
+          <div class="stat-icon">
+            🏠
+          </div>
+
+          <div>
+
+              <span>
+                Propriétés
+              </span>
+
+            <strong>
+              {{ stats.properties }}
+            </strong>
+
+          </div>
+
+        </a>
+
+
+        <!-- UTILISATEURS -->
+
+        <a
+          routerLink="/admin/users"
+          class="stat-card">
+
+          <div class="stat-icon">
+            👥
+          </div>
+
+          <div>
+
+              <span>
+                Utilisateurs
+              </span>
+
+            <strong>
+              {{ stats.users }}
+            </strong>
+
+          </div>
+
+        </a>
+
+
+        <!-- CLIENTS -->
+
+        <a
+          routerLink="/admin/users"
+          class="stat-card">
+
+          <div class="stat-icon">
+            👤
+          </div>
+
+          <div>
+
+              <span>
+                Clients
+              </span>
+
+            <strong>
+              {{ stats.clients }}
+            </strong>
+
+          </div>
+
+        </a>
+
+
+        <!-- AGENTS -->
+
+        <a
+          routerLink="/admin/users"
+          class="stat-card">
+
+          <div class="stat-icon">
+            🧑‍💼
+          </div>
+
+          <div>
+
+              <span>
+                Agents
+              </span>
+
+            <strong>
+              {{ stats.agents }}
+            </strong>
+
+          </div>
+
+        </a>
+
+
+        <!-- VISITES -->
+
+        <a
+          routerLink="/admin/visits"
+          class="stat-card">
+
+          <div class="stat-icon">
+            🔑
+          </div>
+
+          <div>
+
+              <span>
+                Visites
+              </span>
+
+            <strong>
+              {{ stats.visits }}
+            </strong>
+
+          </div>
+
+        </a>
+
+
+        <!-- RENDEZ-VOUS -->
+
+        <a
+          routerLink="/admin/appointments"
+          class="stat-card">
+
+          <div class="stat-icon">
+            📅
+          </div>
+
+          <div>
+
+              <span>
+                Rendez-vous
+              </span>
+
+            <strong>
+              {{ stats.appointments }}
+            </strong>
+
+          </div>
+
+        </a>
+
+
+        <!-- TRANSACTIONS -->
+
+        <a
+          routerLink="/admin/transactions"
+          class="stat-card">
+
+          <div class="stat-icon">
+            🤝
+          </div>
+
+          <div>
+
+              <span>
+                Transactions
+              </span>
+
+            <strong>
+              {{ stats.transactions }}
+            </strong>
+
+          </div>
+
+        </a>
+
+
+        <!-- PAIEMENTS -->
+
+        <a
+          routerLink="/admin/payments"
+          class="stat-card">
+
+          <div class="stat-icon">
+            💳
+          </div>
+
+          <div>
+
+              <span>
+                Paiements
+              </span>
+
+            <strong>
+              {{ stats.payments }}
+            </strong>
+
+          </div>
+
+        </a>
+
+
+      </section>
+
+    </section>
+
+
+    <!-- ===================================================
+         INDICATEURS DE PILOTAGE
+    ==================================================== -->
+
+    <section class="dashboard-section">
+
+      <div class="section-header">
+
+        <div>
+
+            <span class="eyebrow">
+              PILOTAGE
+            </span>
+
+          <h2>
+            À surveiller
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <section class="performance-grid">
+
+
+        <!-- VISITES EN ATTENTE -->
+
+        <a
+          routerLink="/admin/visits"
+          class="performance-card">
+
+            <span class="performance-icon">
+              🔑
+            </span>
+
+          <div>
+
+              <span class="eyebrow">
+                À TRAITER
+              </span>
+
+            <strong>
+              {{ stats.pendingVisits }}
+            </strong>
+
+            <p>
+              Visites en attente
+            </p>
+
+          </div>
+
+        </a>
+
+
+        <!-- RENDEZ-VOUS EN ATTENTE -->
+
+        <a
+          routerLink="/admin/appointments"
+          class="performance-card">
+
+            <span class="performance-icon">
+              📅
+            </span>
+
+          <div>
+
+              <span class="eyebrow">
+                AGENDA
+              </span>
+
+            <strong>
+              {{ stats.pendingAppointments }}
+            </strong>
+
+            <p>
+              Rendez-vous en attente
+            </p>
+
+          </div>
+
+        </a>
+
+
+        <!-- TRANSACTIONS ACTIVES -->
+
+        <a
+          routerLink="/admin/transactions"
+          class="performance-card">
+
+            <span class="performance-icon">
+              🤝
+            </span>
+
+          <div>
+
+              <span class="eyebrow">
+                ACTIVITÉ
+              </span>
+
+            <strong>
+              {{ stats.activeTransactions }}
+            </strong>
+
+            <p>
+              Transactions en négociation
+            </p>
+
+          </div>
+
+        </a>
+
+
+        <!-- TOTAL ENCAISSÉ -->
+
+        <a
+          routerLink="/admin/payments"
+          class="performance-card payment-total">
+
+            <span class="performance-icon">
+              💰
+            </span>
+
+          <div>
+
+              <span class="eyebrow">
+                ENCAISSEMENTS
+              </span>
+
+            <strong>
+
+              {{
+              formatAmount(
+              stats.totalPayments
+              )
+              }}
+
+            </strong>
+
+            <p>
+              Total des paiements reçus
+            </p>
+
+          </div>
+
+        </a>
+
+
+      </section>
+
+    </section>
+
+
+    <!-- ===================================================
+         MODULES ADMIN
+    ==================================================== -->
+
+    <section class="dashboard-section">
+
+      <div class="section-header">
+
+        <div>
+
+            <span class="eyebrow">
+              GESTION
+            </span>
+
+          <h2>
+            Modules administratifs
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <section class="modules-grid">
+
+
+        <!-- UTILISATEURS -->
+
+        <a
+          routerLink="/admin/users"
+          class="module-card">
+
+            <span class="module-icon">
+              👥
+            </span>
+
+          <div>
+
+            <h2>
+              Utilisateurs
+            </h2>
+
+            <p>
+              Gérez les clients,
+              agents et comptes utilisateurs.
+            </p>
+
+            <span class="module-link">
+                Gérer les utilisateurs →
+              </span>
+
+          </div>
+
+        </a>
+
+
+        <!-- PROPRIÉTÉS -->
+
+        <a
+          routerLink="/admin/properties"
+          class="module-card">
+
+            <span class="module-icon">
+              🏘️
+            </span>
+
+          <div>
+
+            <h2>
+              Propriétés
+            </h2>
+
+            <p>
+              Gérez le catalogue immobilier,
+              les biens et leurs informations.
+            </p>
+
+            <span class="module-link">
+                Gérer les propriétés →
+              </span>
+
+          </div>
+
+        </a>
+
+
+        <!-- VISITES -->
+
+        <a
+          routerLink="/admin/visits"
+          class="module-card">
+
+            <span class="module-icon">
+              🔑
+            </span>
+
+          <div>
+
+            <h2>
+              Visites
+            </h2>
+
+            <p>
+              Consultez les demandes
+              et assignez les visites aux agents.
+            </p>
+
+            <span class="module-link">
+                Gérer les visites →
+              </span>
+
+          </div>
+
+        </a>
+
+
+        <!-- RENDEZ-VOUS -->
+
+        <a
+          routerLink="/admin/appointments"
+          class="module-card">
+
+            <span class="module-icon">
+              📅
+            </span>
+
+          <div>
+
+            <h2>
+              Rendez-vous
+            </h2>
+
+            <p>
+              Supervisez l'agenda
+              et affectez les rendez-vous.
+            </p>
+
+            <span class="module-link">
+                Gérer les rendez-vous →
+              </span>
+
+          </div>
+
+        </a>
+
+
+        <!-- TRANSACTIONS -->
+
+        <a
+          routerLink="/admin/transactions"
+          class="module-card">
+
+            <span class="module-icon">
+              🤝
+            </span>
+
+          <div>
+
+            <h2>
+              Transactions
+            </h2>
+
+            <p>
+              Suivez les ventes,
+              locations et négociations immobilières.
+            </p>
+
+            <span class="module-link">
+                Gérer les transactions →
+              </span>
+
+          </div>
+
+        </a>
+
+
+        <!-- PAIEMENTS -->
+
+        <a
+          routerLink="/admin/payments"
+          class="module-card">
+
+            <span class="module-icon">
+              💳
+            </span>
+
+          <div>
+
+            <h2>
+              Paiements
+            </h2>
+
+            <p>
+              Consultez les paiements
+              liés aux transactions.
+            </p>
+
+            <span class="module-link">
+                Voir les paiements →
+              </span>
+
+          </div>
+
+        </a>
+
+
+      </section>
+
+    </section>
+
+
+    <!-- ===================================================
+         RÉSUMÉ OPÉRATIONNEL
+    ==================================================== -->
+
+    <section class="dashboard-section">
+
+      <div class="summary-panel">
+
+
+        <div class="summary-content">
+
+            <span class="eyebrow">
+              RÉSUMÉ OPÉRATIONNEL
+            </span>
+
+          <h2>
+            État actuel de NovaImmo
+          </h2>
+
+          <p>
+            Utilisez les indicateurs ci-dessous
+            pour suivre rapidement les opérations
+            nécessitant une intervention.
+          </p>
+
+        </div>
+
+
+        <div class="summary-items">
+
+
+          <div class="summary-item">
+
+              <span>
+                Visites à traiter
+              </span>
+
+            <strong>
+              {{ stats.pendingVisits }}
+            </strong>
+
+          </div>
+
+
+          <div class="summary-item">
+
+              <span>
+                Rendez-vous à traiter
+              </span>
+
+            <strong>
+              {{ stats.pendingAppointments }}
+            </strong>
+
+          </div>
+
+
+          <div class="summary-item">
+
+              <span>
+                Transactions actives
+              </span>
+
+            <strong>
+              {{ stats.activeTransactions }}
+            </strong>
+
+          </div>
+
+
+          <div class="summary-item">
+
+              <span>
+                Montant encaissé
+              </span>
+
+            <strong>
+
+              {{
+              formatAmount(
+              stats.totalPayments
+              )
+              }}
+
+            </strong>
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+
+    }
+
+  </div>
+
+</section>

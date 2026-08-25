@@ -1,0 +1,490 @@
+<section class="property-images-page">
+
+  <div class="container">
+
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
+    <header class="page-header">
+
+      <div>
+
+        <span class="eyebrow">
+          ADMINISTRATION
+        </span>
+
+        <h1>
+          Images de la propriété
+        </h1>
+
+        @if (property) {
+
+        <p>
+          {{ property.reference }}
+          —
+          {{ property.titre }}
+        </p>
+
+        }
+
+      </div>
+
+
+      <a
+        routerLink="/admin/properties"
+        class="back-button">
+
+        Retour aux propriétés
+
+      </a>
+
+    </header>
+
+
+    <!-- =========================================
+         MESSAGES
+    ========================================== -->
+
+    @if (errorMessage) {
+
+    <div class="message error">
+      {{ errorMessage }}
+    </div>
+
+    }
+
+
+    @if (successMessage) {
+
+    <div class="message success">
+      {{ successMessage }}
+    </div>
+
+    }
+
+
+    <!-- =========================================
+         RÉSUMÉ PROPRIÉTÉ
+    ========================================== -->
+
+    @if (property) {
+
+    <section class="property-summary">
+
+      <div class="property-summary-image">
+
+        @if (property.mainImageUrl) {
+
+        <img
+          [src]="propertyMainImageUrl()"
+          [alt]="property.titre">
+
+        }
+
+        @else {
+
+        <div class="summary-placeholder">
+          🏠
+        </div>
+
+        }
+
+      </div>
+
+
+      <div>
+
+          <span class="reference">
+            {{ property.reference }}
+          </span>
+
+        <h2>
+          {{ property.titre }}
+        </h2>
+
+        <p>
+
+          {{ property.typeNom }}
+
+          •
+
+          {{
+          property.transactionType
+          || 'Transaction non définie'
+          }}
+
+          •
+
+          {{ property.statut }}
+
+        </p>
+
+      </div>
+
+    </section>
+
+    }
+
+
+    <!-- =========================================
+         UPLOAD
+    ========================================== -->
+
+    <section class="upload-section">
+
+      <div class="section-header">
+
+        <span class="eyebrow">
+          NOUVELLE IMAGE
+        </span>
+
+        <h2>
+          Ajouter une photo
+        </h2>
+
+        <p>
+          Sélectionnez une image depuis votre ordinateur.
+        </p>
+
+      </div>
+
+
+      <div class="upload-grid">
+
+
+        <!-- =====================================
+             FICHIER
+        ====================================== -->
+
+        <div class="file-panel">
+
+          <label class="file-selector">
+
+            <span class="file-icon">
+              📷
+            </span>
+
+            <strong>
+              Choisir une image
+            </strong>
+
+            <small>
+              JPG, PNG ou WebP
+            </small>
+
+
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              (change)="onFileSelected($event)">
+
+          </label>
+
+
+          @if (selectedFile) {
+
+          <div class="selected-file">
+
+            <strong>
+              {{ selectedFile.name }}
+            </strong>
+
+            <span>
+
+                {{
+                  selectedFile.size / 1024
+                  | number:'1.0-0'
+                }}
+
+                Ko
+
+              </span>
+
+          </div>
+
+          }
+
+
+          <!-- APERÇU -->
+
+          @if (previewUrl) {
+
+          <div class="preview">
+
+            <img
+              [src]="previewUrl"
+              alt="Aperçu de l'image sélectionnée">
+
+          </div>
+
+          }
+
+        </div>
+
+
+        <!-- =====================================
+             OPTIONS
+        ====================================== -->
+
+        <div class="upload-options">
+
+
+          <div class="form-group">
+
+            <label>
+              Titre de l'image
+            </label>
+
+            <input
+              type="text"
+              [(ngModel)]="titre"
+              placeholder="Ex. Façade principale">
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              Ordre d'affichage
+            </label>
+
+            <input
+              type="number"
+              min="0"
+              [(ngModel)]="ordreAffichage">
+
+          </div>
+
+
+          <label class="checkbox-option">
+
+            <input
+              type="checkbox"
+              [(ngModel)]="principale">
+
+
+            <span>
+
+              <strong>
+                Image principale
+              </strong>
+
+              <small>
+                Cette photo sera utilisée comme image
+                de couverture de la propriété.
+              </small>
+
+            </span>
+
+          </label>
+
+
+          <button
+            type="button"
+            class="upload-button"
+            [disabled]="
+              uploading
+              ||
+              !selectedFile
+            "
+            (click)="upload()">
+
+            @if (uploading) {
+
+            Envoi en cours...
+
+            }
+
+            @else {
+
+            Envoyer l'image
+
+            }
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================================
+         GALERIE
+    ========================================== -->
+
+    <section class="gallery-section">
+
+      <div class="section-header">
+
+        <span class="eyebrow">
+          GALERIE
+        </span>
+
+        <h2>
+          Images enregistrées
+        </h2>
+
+        <p>
+
+          {{ images.length }}
+          image(s) associée(s) à cette propriété.
+
+        </p>
+
+      </div>
+
+
+      <!-- CHARGEMENT -->
+
+      @if (loading) {
+
+      <div class="state">
+
+        Chargement des images...
+
+      </div>
+
+      }
+
+
+      <!-- VIDE -->
+
+      @else if (images.length === 0) {
+
+      <div class="state">
+
+          <span class="empty-icon">
+            🖼️
+          </span>
+
+        <h3>
+          Aucune image
+        </h3>
+
+        <p>
+          Ajoutez la première photo
+          de cette propriété.
+        </p>
+
+      </div>
+
+      }
+
+
+      <!-- LISTE -->
+
+      @else {
+
+      <div class="gallery-grid">
+
+        @for (
+        image of images;
+        track image.id
+        ) {
+
+        <article class="image-card">
+
+
+          <div class="image-wrapper">
+
+            <img
+              [src]="imageUrl(image)"
+              [alt]="
+                    image.titre
+                    || 'Image de la propriété'
+                  ">
+
+
+            @if (image.principale) {
+
+            <span class="main-badge">
+
+                    ★ Principale
+
+                  </span>
+
+            }
+
+
+            <span class="order-badge">
+
+                  #{{ image.ordreAffichage }}
+
+                </span>
+
+          </div>
+
+
+          <div class="image-content">
+
+            <div>
+
+              <strong>
+
+                {{
+                image.titre
+                || 'Sans titre'
+                }}
+
+              </strong>
+
+              <small>
+
+                Image #{{ image.id }}
+
+              </small>
+
+            </div>
+
+
+            <!-- ACTIONS -->
+
+            <div class="image-actions">
+
+
+              @if (!image.principale) {
+
+              <button
+                type="button"
+                class="main-button"
+                (click)="setMain(image)">
+
+                Définir comme principale
+
+              </button>
+
+              }
+
+
+              <button
+                type="button"
+                class="delete-button"
+                (click)="remove(image)">
+
+                Supprimer
+
+              </button>
+
+
+            </div>
+
+          </div>
+
+        </article>
+
+        }
+
+      </div>
+
+      }
+
+    </section>
+
+  </div>
+
+</section>

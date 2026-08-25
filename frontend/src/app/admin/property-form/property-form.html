@@ -1,0 +1,367 @@
+```html
+<div class="page">
+
+  <div class="page-header">
+
+    <div>
+
+      <h1>{{ pageTitle }}</h1>
+
+      <p>
+        Renseignez les informations de la propriété.
+      </p>
+
+    </div>
+
+    <a
+      routerLink="/admin/properties"
+      class="btn btn-secondary">
+
+      Retour
+
+    </a>
+
+  </div>
+
+
+  <form
+    class="property-form"
+    [formGroup]="form"
+    (ngSubmit)="submit()">
+
+    <div
+      class="alert alert-error"
+      *ngIf="errorMessage">
+
+      {{ errorMessage }}
+
+    </div>
+
+
+    <div class="form-grid">
+
+      <div class="form-group">
+
+        <label>
+          Référence
+        </label>
+
+        <input
+          type="text"
+          formControlName="reference"
+          [readonly]="editMode">
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Type
+        </label>
+
+        <select
+          formControlName="typeId">
+
+          @for (
+          type of propertyTypes;
+          track type.id
+          ) {
+
+          <option
+            [value]="type.id">
+
+            {{ type.nom }}
+
+          </option>
+
+          }
+
+        </select>
+
+      </div>
+
+
+      <div class="form-group full-width">
+
+        <label>
+          Titre
+        </label>
+
+        <input
+          type="text"
+          formControlName="titre">
+
+      </div>
+
+
+      <div class="form-group full-width">
+
+        <label>
+          Description
+        </label>
+
+        <textarea
+          rows="5"
+          formControlName="description">
+        </textarea>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Transaction
+        </label>
+
+        <select
+          formControlName="transactionType">
+
+          <option value="VENTE">
+            Vente
+          </option>
+
+          <option value="LOCATION">
+            Location
+          </option>
+
+          <option value="INVESTISSEMENT">
+            Investissement
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Prix
+        </label>
+
+        <input
+          type="number"
+          formControlName="prix">
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Devise
+        </label>
+
+        <input
+          type="text"
+          formControlName="devise">
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Adresse
+        </label>
+
+        <input
+          type="text"
+          formControlName="adresse">
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Quartier
+        </label>
+
+        <input
+          type="text"
+          formControlName="quartier">
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Ville
+        </label>
+
+        <input
+          type="text"
+          formControlName="ville">
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Département
+        </label>
+
+        <input
+          type="text"
+          formControlName="departement">
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Pays
+        </label>
+
+        <input
+          type="text"
+          formControlName="pays">
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Latitude
+        </label>
+
+        <input
+          type="number"
+          step="0.000001"
+          formControlName="latitude">
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Longitude
+        </label>
+
+        <input
+          type="number"
+          step="0.000001"
+          formControlName="longitude">
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Chambres
+        </label>
+
+        <input
+          type="number"
+          formControlName="chambres">
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Salles de bain
+        </label>
+
+        <input
+          type="number"
+          formControlName="sallesBain">
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Superficie (m²)
+        </label>
+
+        <input
+          type="number"
+          formControlName="superficie">
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Statut
+        </label>
+
+        <select
+          formControlName="statut">
+
+          <option value="DISPONIBLE">
+            Disponible
+          </option>
+
+          <option value="RESERVEE">
+            Réservée
+          </option>
+
+          <option value="VENDUE">
+            Vendue
+          </option>
+
+          <option value="LOUEE">
+            Louée
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div
+        class="form-group checkbox">
+
+        <label>
+
+          <input
+            type="checkbox"
+            formControlName="featured">
+
+          Propriété en vedette
+
+        </label>
+
+      </div>
+
+    </div>
+
+
+    <div class="actions">
+
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="submitting">
+
+        {{ submitLabel }}
+
+      </button>
+
+      <a
+        routerLink="/admin/properties"
+        class="btn btn-secondary">
+
+        Annuler
+
+      </a>
+
+    </div>
+
+  </form>
+
+</div>

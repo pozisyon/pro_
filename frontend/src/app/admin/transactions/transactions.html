@@ -1,0 +1,296 @@
+<section class="admin-transactions-page">
+
+  <div class="container">
+
+
+    <header class="page-header">
+
+      <div>
+
+        <span class="eyebrow">
+          ADMINISTRATION
+        </span>
+
+        <h1>
+          Gestion des transactions
+        </h1>
+
+        <p>
+          Suivez les opérations immobilières
+          et assignez-les aux agents.
+        </p>
+
+      </div>
+
+
+      <a
+        routerLink="/admin"
+        class="back-button">
+
+        Retour dashboard
+
+      </a>
+
+    </header>
+
+
+    @if (successMessage) {
+
+    <div class="message success">
+      {{ successMessage }}
+    </div>
+
+    }
+
+
+    @if (errorMessage) {
+
+    <div class="message error">
+      {{ errorMessage }}
+    </div>
+
+    }
+
+
+    @if (loading) {
+
+    <div class="state">
+      Chargement des transactions...
+    </div>
+
+    }
+
+    @else if (
+    transactions.length === 0
+    ) {
+
+    <div class="state">
+      Aucune transaction disponible.
+    </div>
+
+    }
+
+    @else {
+
+    <section class="transactions-list">
+
+
+      @for (
+      transaction of transactions;
+      track transaction.id
+      ) {
+
+      <article class="transaction-card">
+
+
+        <!-- INFORMATIONS -->
+
+        <div class="transaction-main">
+
+              <span class="reference">
+                {{ transaction.reference }}
+              </span>
+
+
+          <h2>
+            {{ transaction.propertyTitle }}
+          </h2>
+
+
+          <p class="property-reference">
+
+            {{ transaction.propertyReference }}
+
+          </p>
+
+
+          <div class="transaction-details">
+
+                <span>
+
+                  💰
+
+                  {{
+                    formatAmount(
+                      transaction.montant,
+                      transaction.devise
+                    )
+                  }}
+
+                </span>
+
+
+            <span>
+
+                  🏷️
+
+                  {{ transaction.typeTransaction }}
+
+                </span>
+
+
+            @if (
+            transaction.dateTransaction
+            ) {
+
+            <span>
+
+                    📅
+
+                    {{
+                      transaction.dateTransaction
+                      | date:'dd/MM/yyyy'
+                    }}
+
+                  </span>
+
+            }
+
+
+          </div>
+
+
+          <p class="association">
+
+            Client :
+
+            <strong>
+
+              {{
+              transaction.clientId
+              || 'Non associé'
+              }}
+
+            </strong>
+
+          </p>
+
+
+          @if (
+          transaction.notes
+          ) {
+
+          <p class="notes">
+
+            {{ transaction.notes }}
+
+          </p>
+
+          }
+
+        </div>
+
+
+        <!-- ACTIONS -->
+
+        <div class="transaction-actions">
+
+
+              <span
+                [class]="
+                  'status '
+                  + getStatusClass(
+                      transaction.statut
+                    )
+                ">
+
+                {{
+                  getStatusLabel(
+                    transaction.statut
+                  )
+                }}
+
+              </span>
+
+
+          <p class="current-agent">
+
+            Agent actuel :
+
+            <strong>
+
+              {{
+              getAgentName(
+              transaction.agentId
+              )
+              }}
+
+            </strong>
+
+          </p>
+
+
+          <select
+            [(ngModel)]="
+                  selectedAgents[
+                    transaction.id
+                  ]
+                ">
+
+            <option
+              [ngValue]="null">
+
+              Choisir un agent
+
+            </option>
+
+
+            @for (
+            agent of agents;
+            track agent.id
+            ) {
+
+            <option
+              [ngValue]="agent.id">
+
+              {{ agent.prenom }}
+              {{ agent.nom }}
+
+            </option>
+
+            }
+
+          </select>
+
+
+          <button
+            type="button"
+            (click)="
+                  assignAgent(
+                    transaction
+                  )
+                ">
+
+            @if (
+            transaction.agentId
+            ) {
+
+            Réassigner
+
+            }
+
+            @else {
+
+            Assigner
+
+            }
+
+          </button>
+
+
+        </div>
+
+
+      </article>
+
+      }
+
+
+    </section>
+
+    }
+
+
+  </div>
+
+</section>

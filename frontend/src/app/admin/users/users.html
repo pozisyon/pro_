@@ -1,0 +1,423 @@
+<section class="admin-users-page">
+
+  <div class="container">
+
+
+    <header class="page-header">
+
+      <div>
+
+        <span class="eyebrow">
+          ADMINISTRATION
+        </span>
+
+        <h1>
+          Utilisateurs
+        </h1>
+
+        <p>
+          Gérez les clients,
+          agents et comptes NovaImmo.
+        </p>
+
+      </div>
+
+
+      <div class="header-actions">
+
+        <a
+          routerLink="/admin"
+          class="secondary-button">
+
+          Retour dashboard
+
+        </a>
+
+
+        <button
+          type="button"
+          class="primary-button"
+          (click)="toggleCreateAgent()">
+
+          @if (showCreateAgent) {
+
+          Fermer
+
+          }
+
+          @else {
+
+          + Créer un agent
+
+          }
+
+        </button>
+
+      </div>
+
+    </header>
+
+
+    @if (successMessage) {
+
+    <div class="message success">
+      {{ successMessage }}
+    </div>
+
+    }
+
+
+    @if (errorMessage) {
+
+    <div class="message error">
+      {{ errorMessage }}
+    </div>
+
+    }
+
+
+    <!-- CREATION AGENT -->
+
+    @if (showCreateAgent) {
+
+    <section class="create-panel">
+
+      <div class="panel-title">
+
+          <span class="eyebrow">
+            NOUVEL AGENT
+          </span>
+
+        <h2>
+          Créer un compte agent
+        </h2>
+
+      </div>
+
+
+      <form
+        [formGroup]="agentForm"
+        (ngSubmit)="createAgent()">
+
+
+        <div class="form-grid">
+
+
+          <div class="form-group">
+
+            <label for="nom">
+              Nom
+            </label>
+
+            <input
+              id="nom"
+              type="text"
+              formControlName="nom">
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="prenom">
+              Prénom
+            </label>
+
+            <input
+              id="prenom"
+              type="text"
+              formControlName="prenom">
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="email">
+              Email
+            </label>
+
+            <input
+              id="email"
+              type="email"
+              formControlName="email">
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="telephone">
+              Téléphone
+            </label>
+
+            <input
+              id="telephone"
+              type="tel"
+              formControlName="telephone">
+
+          </div>
+
+
+          <div class="form-group full-width">
+
+            <label for="password">
+              Mot de passe temporaire
+            </label>
+
+            <input
+              id="password"
+              type="password"
+              formControlName="password">
+
+          </div>
+
+
+        </div>
+
+
+        <button
+          type="submit"
+          class="primary-button submit-button"
+          [disabled]="submitting">
+
+          @if (submitting) {
+
+          Création...
+
+          }
+
+          @else {
+
+          Créer l'agent
+
+          }
+
+        </button>
+
+
+      </form>
+
+    </section>
+
+    }
+
+
+    <!-- LISTE UTILISATEURS -->
+
+    <section class="users-panel">
+
+
+      @if (loading) {
+
+      <div class="state">
+        Chargement des utilisateurs...
+      </div>
+
+      }
+
+      @else if (users.length === 0) {
+
+      <div class="state">
+        Aucun utilisateur.
+      </div>
+
+      }
+
+      @else {
+
+      <div class="table-wrapper">
+
+        <table>
+
+          <thead>
+
+          <tr>
+
+            <th>
+              Utilisateur
+            </th>
+
+            <th>
+              Rôle
+            </th>
+
+            <th>
+              Téléphone
+            </th>
+
+            <th>
+              Statut
+            </th>
+
+            <th>
+              Création
+            </th>
+
+            <th>
+              Action
+            </th>
+
+          </tr>
+
+          </thead>
+
+
+          <tbody>
+
+
+          @for (
+          user of users;
+          track user.id
+          ) {
+
+          <tr>
+
+
+            <td>
+
+              <div class="user-cell">
+
+                <div class="avatar">
+
+                  {{
+                  user.prenom
+                  ?.charAt(0)
+                  || user.nom.charAt(0)
+                  }}
+
+                </div>
+
+                <div>
+
+                  <strong>
+
+                    {{ user.prenom }}
+                    {{ user.nom }}
+
+                  </strong>
+
+                  <small>
+                    {{ user.email }}
+                  </small>
+
+                </div>
+
+              </div>
+
+            </td>
+
+
+            <td>
+
+                    <span
+                      [class]="
+                        'role-badge '
+                        + getRoleClass(
+                            user.roleCode
+                          )
+                      ">
+
+                      {{ user.roleNom }}
+
+                    </span>
+
+            </td>
+
+
+            <td>
+
+              {{
+              user.telephone
+              || '—'
+              }}
+
+            </td>
+
+
+            <td>
+
+                    <span
+                      [class]="
+                        user.actif
+                        ? 'status active'
+                        : 'status inactive'
+                      ">
+
+                      {{
+                        user.actif
+                        ? 'Actif'
+                        : 'Inactif'
+                      }}
+
+                    </span>
+
+            </td>
+
+
+            <td>
+
+              {{
+              user.createdAt
+              .substring(0, 10)
+              }}
+
+            </td>
+
+
+            <td>
+
+              @if (
+              user.roleCode !== 'ADMIN'
+              ) {
+
+              <button
+                type="button"
+                [class]="
+                          user.actif
+                          ? 'status-button deactivate'
+                          : 'status-button activate'
+                        "
+                (click)="toggleStatus(user)">
+
+                {{
+                user.actif
+                ? 'Désactiver'
+                : 'Activer'
+                }}
+
+              </button>
+
+              }
+
+              @else {
+
+              <span class="protected">
+                        Protégé
+                      </span>
+
+              }
+
+            </td>
+
+
+          </tr>
+
+          }
+
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+      }
+
+
+    </section>
+
+
+  </div>
+
+</section>

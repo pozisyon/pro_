@@ -1,0 +1,425 @@
+:host {
+  display: block;
+}
+
+.navbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+
+  z-index: 1000;
+
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.14);
+}
+
+.container {
+  width: min(1180px, 90%);
+  margin: 0 auto;
+}
+
+.navbar-inner {
+  min-height: 88px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-size: 1.35rem;
+  font-weight: 800;
+
+  letter-spacing: 2px;
+
+  color: white;
+
+  text-decoration: none;
+}
+
+.logo span {
+  color: #d8aa4f;
+}
+
+
+/* NAVIGATION */
+
+.nav-links {
+  display: flex;
+  align-items: center;
+
+  gap: 27px;
+}
+
+.nav-links a {
+  color:
+    rgba(255, 255, 255, 0.82);
+
+  text-decoration: none;
+
+  font-size: 0.86rem;
+
+  transition: 0.3s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: #d8aa4f;
+}
+
+
+/* CONNEXION */
+
+.login-link {
+  padding: 11px 18px;
+
+  border-radius: 8px;
+
+  background: white;
+
+  color: #081b18 !important;
+
+  font-weight: 700;
+}
+
+.login-link:hover {
+  background: #d8aa4f;
+}
+
+
+/* =========================================
+   UTILISATEUR CONNECTÉ
+========================================= */
+
+.user-area {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding-left: 8px;
+}
+
+
+/* Nom utilisateur */
+
+.user-name {
+  padding: 8px 12px;
+
+  border-radius: 20px;
+
+  background:
+    rgba(255, 255, 255, 0.10);
+
+  color:
+    rgba(255, 255, 255, 0.88);
+
+  font-size: 0.78rem;
+
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+
+/* Lien dashboard */
+
+.user-area a {
+  color: #d8aa4f;
+
+  text-decoration: none;
+
+  font-size: 0.82rem;
+
+  font-weight: 600;
+}
+
+.user-area a:hover {
+  color: white;
+}
+
+
+/* Bouton déconnexion */
+
+.logout-link {
+  min-height: 40px;
+
+  padding: 0 17px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background: #d8aa4f;
+
+  color: #081b18;
+
+  font-family: inherit;
+
+  font-size: 0.79rem;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.25s,
+    transform 0.25s;
+}
+
+.logout-link:hover {
+  background: white;
+
+  transform:
+    translateY(-1px);
+}
+
+
+/* MENU MOBILE */
+
+.menu-button {
+  display: none;
+
+  width: 42px;
+  height: 42px;
+
+  padding: 8px;
+
+  border: none;
+
+  background: transparent;
+
+  cursor: pointer;
+}
+
+.menu-button span {
+  display: block;
+
+  width: 100%;
+  height: 2px;
+
+  margin: 6px 0;
+
+  background: white;
+}
+.account-link {
+  padding: 10px 14px;
+
+  border-radius: 8px;
+
+  background:
+    rgba(216, 170, 79, 0.12);
+
+  color: #d8aa4f !important;
+
+  font-weight: 700;
+
+  text-decoration: none;
+}
+
+.account-link:hover {
+  background: #d8aa4f;
+
+  color: #081b18 !important;
+}
+
+/* =========================================
+   AUTHENTIFICATION
+========================================= */
+
+.auth-links {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+
+/* =========================================
+   CRÉER UN COMPTE
+========================================= */
+
+.register-link {
+  padding: 10px 14px;
+
+  border: 1px solid
+  rgba(216, 170, 79, 0.65);
+
+  border-radius: 8px;
+
+  color: #d8aa4f !important;
+
+  font-weight: 700;
+
+  text-decoration: none;
+
+  white-space: nowrap;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+
+.register-link:hover {
+  background: #d8aa4f;
+
+  border-color: #d8aa4f;
+
+  color: #081b18 !important;
+}
+
+
+/* =========================================
+   CONNEXION
+========================================= */
+
+.login-link {
+  padding: 10px 17px;
+
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  color: #081b18 !important;
+
+  font-weight: 700;
+
+  text-decoration: none;
+
+  white-space: nowrap;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+
+.login-link:hover {
+  background: #d8aa4f;
+
+  color: #081b18 !important;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 900px) {
+
+  .auth-links {
+    width: 100%;
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 10px;
+  }
+
+
+  .register-link,
+  .login-link {
+    width: 100%;
+
+    text-align: center;
+  }
+
+}
+
+/* TABLET / MOBILE */
+
+@media (max-width: 900px) {
+
+  .menu-button {
+    display: block;
+  }
+
+  .nav-links {
+    position: absolute;
+
+    top: 88px;
+    left: 0;
+
+    width: 100%;
+
+    padding: 30px;
+
+    display: none;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 20px;
+
+    background: #081b18;
+
+    box-shadow:
+      0 18px 40px
+      rgba(0, 0, 0, 0.22);
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .nav-links > a {
+    width: 100%;
+  }
+
+  .login-link {
+    width: 100%;
+
+    text-align: center;
+  }
+
+
+  /* utilisateur connecté */
+
+  .user-area {
+    width: 100%;
+
+    padding-top: 16px;
+    padding-left: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 12px;
+
+    border-top:
+      1px solid rgba(255, 255, 255, 0.10);
+  }
+
+  .user-name {
+    width: 100%;
+
+    text-align: center;
+  }
+
+  .user-area a {
+    width: 100%;
+
+    padding: 11px;
+
+    text-align: center;
+
+    border:
+      1px solid rgba(216, 170, 79, 0.35);
+
+    border-radius: 8px;
+  }
+
+  .logout-link {
+    width: 100%;
+
+    min-height: 44px;
+  }
+}

@@ -1,0 +1,121 @@
+<section class="auth-page">
+
+  <div class="auth-wrapper">
+
+
+    <div class="auth-presentation">
+
+      <span>
+        NOVAIMMO • JACMEL
+      </span>
+
+      <h1>
+        Bienvenue dans
+        votre espace immobilier.
+      </h1>
+
+      <p>
+
+        Retrouvez vos visites,
+        rendez-vous, transactions
+        et documents NovaImmo.
+
+      </p>
+
+    </div>
+
+
+    <div class="auth-card">
+
+
+      <span class="section-label">
+        CONNEXION
+      </span>
+
+      <h2>
+        Accéder à mon compte
+      </h2>
+
+
+      @if (errorMessage) {
+
+      <div class="error-message">
+        {{ errorMessage }}
+      </div>
+
+      }
+
+
+      <form
+        [formGroup]="loginForm"
+        (ngSubmit)="submit()">
+
+
+        <div class="form-group">
+
+          <label for="email">
+            Email
+          </label>
+
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            placeholder="email@example.com">
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="password">
+            Mot de passe
+          </label>
+
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            placeholder="Votre mot de passe">
+
+        </div>
+
+
+        <button
+          type="submit"
+          [disabled]="submitting">
+
+          @if (submitting) {
+
+          Connexion...
+
+          }
+
+          @else {
+
+          Se connecter
+
+          }
+
+        </button>
+
+      </form>
+
+
+      <p class="register-link">
+
+        Pas encore de compte ?
+
+        <a routerLink="/register">
+          Créer un compte
+        </a>
+
+      </p>
+
+
+    </div>
+
+
+  </div>
+
+</section>

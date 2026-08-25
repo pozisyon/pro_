@@ -1,0 +1,539 @@
+<section class="property-detail-page">
+
+  <div class="container">
+
+
+    @if (loading) {
+
+    <div class="state-box">
+
+      <p>
+        Chargement de la propriété...
+      </p>
+
+    </div>
+
+    }
+
+
+    @else if (errorMessage) {
+
+    <div class="state-box error">
+
+      <p>
+        {{ errorMessage }}
+      </p>
+
+      <a
+        routerLink="/properties"
+        class="back-link">
+
+        Retour aux propriétés
+
+      </a>
+
+    </div>
+
+    }
+
+
+    @else if (property) {
+
+
+    <!-- =========================
+         FIL D'ARIANE
+    ========================== -->
+
+    <div class="breadcrumb">
+
+      <a routerLink="/">
+        Accueil
+      </a>
+
+      <span>
+          /
+        </span>
+
+      <a routerLink="/properties">
+        Propriétés
+      </a>
+
+      <span>
+          /
+        </span>
+
+      <strong>
+        {{ property.reference }}
+      </strong>
+
+    </div>
+
+
+
+    <!-- =========================
+         EN-TETE
+    ========================== -->
+
+    <div class="property-header">
+
+
+      <div>
+
+          <span class="transaction-badge">
+
+            {{
+              getTransactionLabel(
+                property.transactionType
+              )
+            }}
+
+          </span>
+
+
+        <h1>
+
+          {{ property.titre }}
+
+        </h1>
+
+
+        <p class="location">
+
+          📍
+
+          @if (property.quartier) {
+
+          {{ property.quartier }},
+
+          }
+
+          {{ property.ville }},
+          {{ property.departement }}
+
+        </p>
+
+      </div>
+
+
+      <div class="price-box">
+
+        <small>
+          PRIX
+        </small>
+
+        <strong>
+
+          {{
+          formatPrice(
+          property.prix,
+          property.devise
+          )
+          }}
+
+        </strong>
+
+        <span>
+            {{ property.typeNom }}
+          </span>
+
+      </div>
+
+
+    </div>
+
+
+
+    <!-- =========================
+         GALERIE
+    ========================== -->
+
+    <section class="gallery">
+
+
+      <div class="main-image">
+
+        <img
+          [src]="selectedImage"
+          [alt]="property.titre">
+
+      </div>
+
+
+      @if (
+      property.images &&
+      property.images.length > 1
+      ) {
+
+      <div class="thumbnails">
+
+        @for (
+        image of property.images;
+        track image.id
+        ) {
+
+        <button
+          type="button"
+          class="thumbnail"
+          [class.active]="
+                  selectedImage === image.imageUrl
+                "
+          (click)="
+                  selectImage(
+                    image.imageUrl
+                  )
+                ">
+
+          <img
+            [src]="image.imageUrl"
+            [alt]="
+                    image.titre ||
+                    property.titre
+                  ">
+
+        </button>
+
+        }
+
+      </div>
+
+      }
+
+
+    </section>
+
+
+
+    <!-- =========================
+         CONTENU
+    ========================== -->
+
+    <div class="content-grid">
+
+
+      <!-- COLONNE PRINCIPALE -->
+
+      <div>
+
+
+        <!-- CARACTERISTIQUES -->
+
+        <section class="info-card">
+
+            <span class="section-label">
+
+              CARACTÉRISTIQUES
+
+            </span>
+
+
+          <div class="features-grid">
+
+
+            <div>
+
+              <small>
+                Type
+              </small>
+
+              <strong>
+                {{ property.typeNom }}
+              </strong>
+
+            </div>
+
+
+            @if (property.chambres > 0) {
+
+            <div>
+
+              <small>
+                Chambres
+              </small>
+
+              <strong>
+                {{ property.chambres }}
+              </strong>
+
+            </div>
+
+            }
+
+
+            @if (property.sallesBain > 0) {
+
+            <div>
+
+              <small>
+                Salles de bain
+              </small>
+
+              <strong>
+                {{ property.sallesBain }}
+              </strong>
+
+            </div>
+
+            }
+
+
+            <div>
+
+              <small>
+                Superficie
+              </small>
+
+              <strong>
+                {{ property.superficie }} m²
+              </strong>
+
+            </div>
+
+
+            <div>
+
+              <small>
+                Référence
+              </small>
+
+              <strong>
+                {{ property.reference }}
+              </strong>
+
+            </div>
+
+
+            <div>
+
+              <small>
+                Statut
+              </small>
+
+              <strong>
+                {{ property.statut }}
+              </strong>
+
+            </div>
+
+
+          </div>
+
+        </section>
+
+
+
+        <!-- DESCRIPTION -->
+
+        <section class="info-card">
+
+            <span class="section-label">
+
+              DESCRIPTION
+
+            </span>
+
+
+          <h2>
+
+            À propos de cette propriété
+
+          </h2>
+
+
+          <p class="description">
+
+            {{ property.description }}
+
+          </p>
+
+        </section>
+
+
+
+        <!-- ADRESSE -->
+
+        <section class="info-card">
+
+            <span class="section-label">
+
+              LOCALISATION
+
+            </span>
+
+
+          <h2>
+
+            {{ property.quartier || property.ville }}
+
+          </h2>
+
+
+          <div class="address">
+
+            <p>
+
+              <strong>
+                Adresse :
+              </strong>
+
+              {{
+              property.adresse ||
+              'Adresse disponible sur demande'
+              }}
+
+            </p>
+
+
+            <p>
+
+              <strong>
+                Ville :
+              </strong>
+
+              {{ property.ville }}
+
+            </p>
+
+
+            <p>
+
+              <strong>
+                Département :
+              </strong>
+
+              {{ property.departement }}
+
+            </p>
+
+
+            <p>
+
+              <strong>
+                Pays :
+              </strong>
+
+              {{ property.pays }}
+
+            </p>
+
+          </div>
+
+
+          @if (
+          property.latitude &&
+          property.longitude
+          ) {
+
+          <div class="coordinates">
+
+            Coordonnées :
+            {{ property.latitude }},
+            {{ property.longitude }}
+
+          </div>
+
+          }
+
+        </section>
+
+
+      </div>
+
+
+
+      <!-- SIDEBAR -->
+
+      <aside class="sidebar">
+
+
+        <div class="contact-card">
+
+
+            <span class="section-label">
+
+              INTÉRESSÉ PAR CE BIEN ?
+
+            </span>
+
+
+          <h2>
+
+            Organisez votre prochaine étape.
+
+          </h2>
+
+
+          <p>
+
+            Contactez NovaImmo pour obtenir
+            plus d'informations ou planifier
+            une visite de cette propriété.
+
+          </p>
+
+
+          <a
+            [routerLink]="[
+    '/properties',
+    property.id,
+    'visit'
+  ]"
+            class="btn btn-primary">
+
+            Demander une visite
+
+          </a>
+
+
+          <a
+            routerLink="/appointment"
+            class="btn btn-secondary">
+
+            Prendre un rendez-vous général
+
+          </a>
+
+
+          <a
+            routerLink="/properties"
+            class="back-properties">
+
+            ← Retour aux propriétés
+
+          </a>
+
+
+        </div>
+
+
+        <div class="office-card">
+
+          <small>
+            SIÈGE SOCIAL
+          </small>
+
+          <strong>
+            NovaImmo
+          </strong>
+
+          <p>
+
+            Jacmel
+            <br>
+            Sud-Est, Haïti
+
+          </p>
+
+        </div>
+
+
+      </aside>
+
+
+    </div>
+
+
+    }
+
+  </div>
+
+</section>

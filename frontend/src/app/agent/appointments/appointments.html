@@ -1,0 +1,468 @@
+<section class="agent-appointments-page">
+
+  <div class="container">
+
+
+    <!-- =====================================================
+         EN-TÊTE
+    ====================================================== -->
+
+    <header class="page-header">
+
+      <div>
+
+        <span class="eyebrow">
+          ESPACE AGENT
+        </span>
+
+        <h1>
+          Mes rendez-vous
+        </h1>
+
+        <p>
+          Consultez et gérez les rendez-vous
+          qui vous ont été assignés.
+        </p>
+
+      </div>
+
+
+      <a
+        routerLink="/agent"
+        class="back-button">
+
+        Retour au dashboard
+
+      </a>
+
+    </header>
+
+
+    <!-- =====================================================
+         CHARGEMENT
+    ====================================================== -->
+
+    @if (loading) {
+
+    <div class="state">
+
+      Chargement des rendez-vous...
+
+    </div>
+
+    }
+
+
+    <!-- =====================================================
+         ERREUR
+    ====================================================== -->
+
+    @else if (errorMessage) {
+
+    <div class="state error">
+
+      <p>
+        {{ errorMessage }}
+      </p>
+
+      <button
+        type="button"
+        class="retry-button"
+        (click)="loadAppointments()">
+
+        Réessayer
+
+      </button>
+
+    </div>
+
+    }
+
+
+    <!-- =====================================================
+         AUCUN RENDEZ-VOUS
+    ====================================================== -->
+
+    @else if (appointments.length === 0) {
+
+    <div class="state empty-state">
+
+      <h2>
+        Aucun rendez-vous
+      </h2>
+
+      <p>
+        Aucun rendez-vous ne vous est actuellement assigné.
+      </p>
+
+    </div>
+
+    }
+
+
+    <!-- =====================================================
+         LISTE
+    ====================================================== -->
+
+    @else {
+
+    <div class="appointments-summary">
+
+        <span>
+          {{ appointments.length }}
+          rendez-vous assigné(s)
+        </span>
+
+    </div>
+
+
+    <section class="appointments-list">
+
+      @for (
+      appointment of appointments;
+      track appointment.id
+      ) {
+
+      <article class="appointment-card">
+
+
+        <!-- =============================================
+             EN-TÊTE CARTE
+        ============================================== -->
+
+        <div class="appointment-card-header">
+
+          <div>
+
+                <span class="reference">
+
+                  RENDEZ-VOUS
+                  #{{ appointment.id }}
+
+                </span>
+
+            <h2>
+              {{ appointment.sujet }}
+            </h2>
+
+          </div>
+
+
+          <span
+            class="status"
+            [class.status-requested]="
+                  appointment.statut === 'DEMANDE'
+                "
+            [class.status-confirmed]="
+                  appointment.statut === 'CONFIRME'
+                "
+            [class.status-completed]="
+                  appointment.statut === 'TERMINE'
+                "
+            [class.status-cancelled]="
+                  appointment.statut === 'ANNULE'
+                "
+            [class.status-rescheduled]="
+                  appointment.statut === 'REPORTE'
+                ">
+
+                {{
+                  getStatusLabel(
+                    appointment.statut
+                  )
+                }}
+
+              </span>
+
+        </div>
+
+
+        <!-- =============================================
+             INFORMATIONS
+        ============================================== -->
+
+        <div class="appointment-details">
+
+
+          <div class="detail-item">
+
+                <span class="detail-label">
+                  Client
+                </span>
+
+            <strong>
+              {{ appointment.nomContact }}
+            </strong>
+
+          </div>
+
+
+          <div class="detail-item">
+
+                <span class="detail-label">
+                  Courriel
+                </span>
+
+            <strong>
+              {{ appointment.email }}
+            </strong>
+
+          </div>
+
+
+          <div class="detail-item">
+
+                <span class="detail-label">
+                  Téléphone
+                </span>
+
+            <strong>
+              {{ appointment.telephone }}
+            </strong>
+
+          </div>
+
+
+          <div class="detail-item">
+
+                <span class="detail-label">
+                  Début
+                </span>
+
+            <strong>
+
+              {{
+              appointment.dateDebut
+              | date:'dd/MM/yyyy à HH:mm'
+              }}
+
+            </strong>
+
+          </div>
+
+
+          @if (appointment.dateFin) {
+
+          <div class="detail-item">
+
+                  <span class="detail-label">
+                    Fin
+                  </span>
+
+            <strong>
+
+              {{
+              appointment.dateFin
+              | date:'dd/MM/yyyy à HH:mm'
+              }}
+
+            </strong>
+
+          </div>
+
+          }
+
+
+          <div class="detail-item">
+
+                <span class="detail-label">
+                  Lieu
+                </span>
+
+            <strong>
+
+              {{
+              appointment.lieu
+              || 'Non défini'
+              }}
+
+            </strong>
+
+          </div>
+
+
+        </div>
+
+
+        <!-- =============================================
+             NOTES
+        ============================================== -->
+
+        @if (appointment.notes) {
+
+        <div class="appointment-notes">
+
+                <span class="detail-label">
+                  Notes
+                </span>
+
+          <p>
+            {{ appointment.notes }}
+          </p>
+
+        </div>
+
+        }
+
+
+        <!-- =============================================
+             ACTIONS
+        ============================================== -->
+
+        <div class="appointment-actions">
+
+
+          <!-- DEMANDE -->
+
+          @if (
+          appointment.statut === 'DEMANDE'
+          ) {
+
+          <button
+            type="button"
+            class="confirm-button"
+            (click)="
+                    updateStatus(
+                      appointment,
+                      'CONFIRME'
+                    )
+                  ">
+
+            Confirmer le rendez-vous
+
+          </button>
+
+          }
+
+
+          <!-- CONFIRMÉ -->
+
+          @if (
+          appointment.statut === 'CONFIRME'
+          ) {
+
+          <button
+            type="button"
+            class="complete-button"
+            (click)="
+                    updateStatus(
+                      appointment,
+                      'TERMINE'
+                    )
+                  ">
+
+            Marquer terminé
+
+          </button>
+
+          }
+
+
+          <!-- ANNULATION -->
+
+          @if (
+          appointment.statut !== 'TERMINE'
+          &&
+          appointment.statut !== 'ANNULE'
+          ) {
+
+          <button
+            type="button"
+            class="cancel-button"
+            (click)="
+                    updateStatus(
+                      appointment,
+                      'ANNULE'
+                    )
+                  ">
+
+            Annuler
+
+          </button>
+
+          }
+
+
+          <!-- TERMINÉ -->
+
+          @if (
+          appointment.statut === 'TERMINE'
+          ) {
+
+          <div class="final-status completed-message">
+
+            Rendez-vous terminé
+
+          </div>
+
+          }
+
+
+          <!-- ANNULÉ -->
+
+          @if (
+          appointment.statut === 'ANNULE'
+          ) {
+
+          <div class="final-status cancelled-message">
+
+            Rendez-vous annulé
+
+          </div>
+
+          }
+
+
+          <!-- REPORTÉ -->
+
+          @if (
+          appointment.statut === 'REPORTE'
+          ) {
+
+          <div class="final-status rescheduled-message">
+
+            Rendez-vous reporté
+
+          </div>
+
+          }
+
+        </div>
+
+
+        <!-- =============================================
+             FOOTER
+        ============================================== -->
+
+        <footer class="appointment-footer">
+
+              <span>
+                ID #{{ appointment.id }}
+              </span>
+
+          <span>
+
+                Créé le
+
+                {{
+                  appointment.createdAt
+                  | date:'dd/MM/yyyy'
+                }}
+
+              </span>
+
+        </footer>
+
+
+      </article>
+
+      }
+
+    </section>
+
+    }
+
+
+  </div>
+
+</section>

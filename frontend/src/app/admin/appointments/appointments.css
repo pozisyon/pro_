@@ -1,0 +1,415 @@
+:host {
+  display: block;
+
+  --dark: #081b18;
+  --green: #176653;
+  --green-light: #eaf4f0;
+  --gold: #d8aa4f;
+
+  --background: #f5f7f5;
+  --white: #ffffff;
+
+  --text: #18231f;
+  --text-light: #6b7672;
+
+  --border: #e2e7e4;
+}
+
+
+.admin-appointments-page {
+  min-height: 100vh;
+
+  padding:
+    140px 0 100px;
+
+  background:
+    var(--background);
+}
+
+
+.container {
+  width:
+    min(1180px, 90%);
+
+  margin: auto;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.page-header {
+  margin-bottom: 30px;
+
+  display: flex;
+
+  align-items: end;
+
+  justify-content:
+    space-between;
+
+  gap: 25px;
+}
+
+
+.eyebrow {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color:
+    var(--green);
+
+  font-size: 0.65rem;
+
+  font-weight: 700;
+
+  letter-spacing: 1.7px;
+}
+
+
+.page-header h1 {
+  margin-bottom: 8px;
+
+  font-family:
+    Georgia,
+    serif;
+
+  font-size:
+    clamp(2.4rem, 5vw, 4rem);
+}
+
+
+.page-header p {
+  color:
+    var(--text-light);
+}
+
+
+.back-button {
+  min-height: 43px;
+
+  padding:
+    0 17px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 8px;
+
+  background:
+    white;
+
+  color:
+    var(--dark);
+
+  text-decoration: none;
+
+  font-weight: 700;
+}
+
+
+/* =========================================
+   MESSAGES
+========================================= */
+
+.message {
+  margin-bottom: 20px;
+
+  padding:
+    13px 16px;
+
+  border-radius: 9px;
+}
+
+
+.message.success {
+  background:
+    #e5f5ed;
+
+  color:
+    #176653;
+}
+
+
+.message.error {
+  background:
+    #f8e7e7;
+
+  color:
+    #a13c3c;
+}
+
+
+/* =========================================
+   LISTE
+========================================= */
+
+.appointments-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 17px;
+}
+
+
+.appointment-card {
+  padding: 25px;
+
+  display: grid;
+
+  grid-template-columns:
+    1fr 280px;
+
+  gap: 30px;
+
+  background:
+    white;
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 16px;
+}
+
+
+.reference {
+  color:
+    var(--gold);
+
+  font-size: 0.65rem;
+
+  font-weight: 700;
+
+  letter-spacing: 1px;
+}
+
+
+.appointment-main h2 {
+  margin:
+    6px 0 8px;
+
+  font-family:
+    Georgia,
+    serif;
+}
+
+
+.contact {
+  color:
+    var(--text-light);
+
+  font-size: 0.8rem;
+}
+
+
+.appointment-details {
+  margin-top: 17px;
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 18px;
+
+  color:
+    var(--text-light);
+
+  font-size: 0.78rem;
+}
+
+
+.telephone {
+  margin-top: 13px;
+
+  color:
+    var(--text-light);
+
+  font-size: 0.78rem;
+}
+
+
+.notes {
+  margin-top: 15px;
+
+  padding: 13px;
+
+  border-radius: 8px;
+
+  background:
+    var(--background);
+
+  color:
+    var(--text-light);
+
+  font-size: 0.78rem;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================
+   ACTIONS
+========================================= */
+
+.appointment-actions {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: stretch;
+
+  gap: 12px;
+}
+
+
+.current-agent {
+  color:
+    var(--text-light);
+
+  font-size: 0.75rem;
+}
+
+
+.current-agent strong {
+  color:
+    var(--dark);
+}
+
+
+select {
+  width: 100%;
+
+  min-height: 43px;
+
+  padding:
+    0 10px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 8px;
+
+  background:
+    white;
+}
+
+
+button {
+  min-height: 43px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background:
+    var(--gold);
+
+  color:
+    var(--dark);
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+/* =========================================
+   STATUTS
+========================================= */
+
+.status {
+  align-self:
+    flex-start;
+
+  padding:
+    6px 10px;
+
+  border-radius: 30px;
+
+  font-size: 0.65rem;
+
+  font-weight: 700;
+}
+
+
+.status.pending {
+  background: #fff4d8;
+
+  color: #946800;
+}
+
+
+.status.confirmed {
+  background: #e5f5ed;
+
+  color: #176653;
+}
+
+
+.status.cancelled {
+  background: #f8e7e7;
+
+  color: #a13c3c;
+}
+
+
+.status.completed {
+  background: #e9edf0;
+
+  color: #49585f;
+}
+
+
+.status.rescheduled {
+  background: #eee8fa;
+
+  color: #69509a;
+}
+
+
+/* =========================================
+   ETAT
+========================================= */
+
+.state {
+  padding: 50px;
+
+  text-align: center;
+
+  background:
+    white;
+
+  border-radius: 16px;
+
+  color:
+    var(--text-light);
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 800px) {
+
+  .appointment-card {
+    grid-template-columns: 1fr;
+  }
+
+
+  .page-header {
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+  }
+
+}

@@ -1,0 +1,401 @@
+<section class="agent-transactions-page">
+
+  <div class="container">
+
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
+    <header class="page-header">
+
+      <div>
+
+        <span class="eyebrow">
+          ESPACE AGENT
+        </span>
+
+        <h1>
+          Mes transactions
+        </h1>
+
+        <p>
+          Consultez et gérez les transactions
+          immobilières qui vous sont assignées.
+        </p>
+
+      </div>
+
+
+      <a
+        routerLink="/agent"
+        class="back-button">
+
+        Retour au dashboard
+
+      </a>
+
+    </header>
+
+
+    <!-- =========================================
+         CHARGEMENT
+    ========================================== -->
+
+    @if (loading) {
+
+    <div class="state">
+      Chargement des transactions...
+    </div>
+
+    }
+
+
+    <!-- =========================================
+         ERREUR
+    ========================================== -->
+
+    @else if (errorMessage) {
+
+    <div class="state error">
+
+      <p>
+        {{ errorMessage }}
+      </p>
+
+      <button
+        type="button"
+        class="retry-button"
+        (click)="loadTransactions()">
+
+        Réessayer
+
+      </button>
+
+    </div>
+
+    }
+
+
+    <!-- =========================================
+         AUCUNE TRANSACTION
+    ========================================== -->
+
+    @else if (transactions.length === 0) {
+
+    <div class="state">
+
+      Aucune transaction
+      ne vous est actuellement assignée.
+
+    </div>
+
+    }
+
+
+    <!-- =========================================
+         LISTE
+    ========================================== -->
+
+    @else {
+
+    <div class="transactions-summary">
+
+      {{ transactions.length }}
+      transaction(s) assignée(s)
+
+    </div>
+
+
+    <section class="transactions-list">
+
+      @for (
+      transaction of transactions;
+      track transaction.id
+      ) {
+
+      <article class="transaction-card">
+
+
+        <!-- HEADER CARTE -->
+
+        <div class="transaction-header">
+
+          <div>
+
+                <span class="reference">
+                  {{ transaction.reference }}
+                </span>
+
+            <h2>
+              {{ transaction.propertyTitle }}
+            </h2>
+
+            <p class="property-reference">
+              {{ transaction.propertyReference }}
+            </p>
+
+          </div>
+
+
+          <span
+            [class]="
+                  'status '
+                  + getStatusClass(
+                      transaction.statut
+                    )
+                ">
+
+                {{
+                  getStatusLabel(
+                    transaction.statut
+                  )
+                }}
+
+              </span>
+
+        </div>
+
+
+        <!-- INFORMATIONS -->
+
+        <div class="transaction-details">
+
+          <div class="detail-item">
+
+                <span class="detail-label">
+                  Type
+                </span>
+
+            <strong>
+              {{ transaction.typeTransaction }}
+            </strong>
+
+          </div>
+
+
+          <div class="detail-item">
+
+                <span class="detail-label">
+                  Montant
+                </span>
+
+            <strong>
+
+              {{
+              formatAmount(
+              transaction.montant,
+              transaction.devise
+              )
+              }}
+
+            </strong>
+
+          </div>
+
+
+          <div class="detail-item">
+
+                <span class="detail-label">
+                  Client
+                </span>
+
+            <strong>
+              #{{ transaction.clientId }}
+            </strong>
+
+          </div>
+
+
+          @if (
+          transaction.dateTransaction
+          ) {
+
+          <div class="detail-item">
+
+                  <span class="detail-label">
+                    Date
+                  </span>
+
+            <strong>
+
+              {{
+              transaction.dateTransaction
+              | date:'dd/MM/yyyy'
+              }}
+
+            </strong>
+
+          </div>
+
+          }
+
+        </div>
+
+
+        <!-- NOTES -->
+
+        @if (
+        transaction.notes
+        ) {
+
+        <div class="transaction-notes">
+
+                <span class="detail-label">
+                  Notes
+                </span>
+
+          <p>
+            {{ transaction.notes }}
+          </p>
+
+        </div>
+
+        }
+
+
+        <!-- =====================================
+             ACTIONS
+        ====================================== -->
+
+        <div class="transaction-actions">
+
+
+          <!-- EN NEGOCIATION -->
+
+          @if (
+          transaction.statut === 'EN_NEGOCIATION'
+          ) {
+
+          <button
+            type="button"
+            class="confirm-button"
+            (click)="
+                    updateStatus(
+                      transaction,
+                      'CONFIRMEE'
+                    )
+                  ">
+
+            Confirmer la transaction
+
+          </button>
+
+          }
+
+
+          <!-- CONFIRMEE -->
+
+          @if (
+          transaction.statut === 'CONFIRMEE'
+          ) {
+
+          <button
+            type="button"
+            class="complete-button"
+            (click)="
+                    updateStatus(
+                      transaction,
+                      'TERMINEE'
+                    )
+                  ">
+
+            Marquer comme terminée
+
+          </button>
+
+          }
+
+
+          <!-- ANNULATION -->
+
+          @if (
+          transaction.statut !== 'TERMINEE'
+          &&
+          transaction.statut !== 'ANNULEE'
+          ) {
+
+          <button
+            type="button"
+            class="cancel-button"
+            (click)="
+                    updateStatus(
+                      transaction,
+                      'ANNULEE'
+                    )
+                  ">
+
+            Annuler
+
+          </button>
+
+          }
+
+
+          <!-- TERMINÉE -->
+
+          @if (
+          transaction.statut === 'TERMINEE'
+          ) {
+
+          <div class="final-status completed-message">
+
+            Transaction terminée
+
+          </div>
+
+          }
+
+
+          <!-- ANNULÉE -->
+
+          @if (
+          transaction.statut === 'ANNULEE'
+          ) {
+
+          <div class="final-status cancelled-message">
+
+            Transaction annulée
+
+          </div>
+
+          }
+
+
+        </div>
+
+
+        <!-- FOOTER -->
+
+        <footer class="transaction-footer">
+
+              <span>
+                Transaction #{{ transaction.id }}
+              </span>
+
+          <span>
+
+                Créée le
+
+                {{
+                  transaction.createdAt
+                  | date:'dd/MM/yyyy'
+                }}
+
+              </span>
+
+        </footer>
+
+
+      </article>
+
+      }
+
+    </section>
+
+    }
+
+
+  </div>
+
+</section>

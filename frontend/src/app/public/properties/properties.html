@@ -1,0 +1,430 @@
+<section class="properties-page">
+
+  <div class="container">
+
+
+    <!-- HEADER -->
+
+    <div class="page-header">
+
+      <span class="section-label">
+        CATALOGUE IMMOBILIER
+      </span>
+
+      <h1>
+        Découvrez nos propriétés
+        à Jacmel.
+      </h1>
+
+      <p>
+
+        Explorez les biens disponibles
+        à la vente, à la location ou
+        destinés à l'investissement.
+
+      </p>
+
+    </div>
+
+
+    <!-- FILTRES -->
+
+    <div class="filters-card">
+
+
+      <div class="filter-group search">
+
+        <label for="search">
+          Rechercher
+        </label>
+
+        <input
+          id="search"
+          type="text"
+          [(ngModel)]="searchTerm"
+          (input)="applyFilters()"
+          placeholder="Titre, quartier, référence...">
+
+      </div>
+
+
+      <div class="filter-group">
+
+        <label for="type">
+          Type
+        </label>
+
+        <select
+          id="type"
+          [(ngModel)]="selectedType"
+          (change)="applyFilters()">
+
+          <option value="">
+            Tous
+          </option>
+
+          <option value="HOUSE">
+            Maison
+          </option>
+
+          <option value="VILLA">
+            Villa
+          </option>
+
+          <option value="APARTMENT">
+            Appartement
+          </option>
+
+          <option value="LAND">
+            Terrain
+          </option>
+
+          <option value="COMMERCIAL">
+            Commercial
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="filter-group">
+
+        <label for="transaction">
+          Transaction
+        </label>
+
+        <select
+          id="transaction"
+          [(ngModel)]="selectedTransaction"
+          (change)="applyFilters()">
+
+          <option value="">
+            Toutes
+          </option>
+
+          <option value="VENTE">
+            Vente
+          </option>
+
+          <option value="LOCATION">
+            Location
+          </option>
+
+          <option value="INVESTISSEMENT">
+            Investissement
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="filter-group">
+
+        <label for="location">
+          Zone
+        </label>
+
+        <select
+          id="location"
+          [(ngModel)]="selectedLocation"
+          (change)="applyFilters()">
+
+          <option value="">
+            Tout Jacmel
+          </option>
+
+          <option value="Centre-ville">
+            Centre-ville
+          </option>
+
+          <option value="Cyvadier">
+            Cyvadier
+          </option>
+
+          <option value="Route de Marigot">
+            Route de Marigot
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="filter-group">
+
+        <label for="budget">
+          Budget max.
+        </label>
+
+        <select
+          id="budget"
+          [(ngModel)]="maxBudget"
+          (change)="applyFilters()">
+
+          <option [ngValue]="null">
+            Aucun
+          </option>
+
+          <option [ngValue]="100000">
+            100 000 $
+          </option>
+
+          <option [ngValue]="250000">
+            250 000 $
+          </option>
+
+          <option [ngValue]="500000">
+            500 000 $
+          </option>
+
+          <option [ngValue]="1000000">
+            1 000 000 $
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="reset-button"
+        (click)="resetFilters()">
+
+        Réinitialiser
+
+      </button>
+
+
+    </div>
+
+
+    <!-- RESULTATS -->
+
+    <div class="results-header">
+
+      <strong>
+
+        {{ filteredProperties.length }}
+
+        @if (
+        filteredProperties.length > 1
+        ) {
+
+        propriétés trouvées
+
+        }
+
+        @else {
+
+        propriété trouvée
+
+        }
+
+      </strong>
+
+    </div>
+
+
+    @if (loading) {
+
+    <div class="state-box">
+      Chargement des propriétés...
+    </div>
+
+    }
+
+    @else if (errorMessage) {
+
+    <div class="state-box error">
+      {{ errorMessage }}
+    </div>
+
+    }
+
+    @else if (
+    filteredProperties.length === 0
+    ) {
+
+    <div class="state-box">
+
+      <h3>
+        Aucune propriété trouvée
+      </h3>
+
+      <p>
+        Modifiez vos critères
+        de recherche.
+      </p>
+
+      <button
+        type="button"
+        (click)="resetFilters()">
+
+        Réinitialiser les filtres
+
+      </button>
+
+    </div>
+
+    }
+
+    @else {
+
+    <div class="properties-grid">
+
+
+      @for (
+      property of filteredProperties;
+      track property.id
+      ) {
+
+
+      <article class="property-card">
+
+
+        <a
+          [routerLink]="[
+                '/properties',
+                property.id
+              ]"
+          class="property-image">
+
+          <img
+            [src]="getPropertyImage(property)"
+            [alt]="property.titre">
+
+          <span class="badge">
+
+                {{
+                  getTransactionLabel(
+                    property.transactionType
+                  )
+                }}
+
+              </span>
+
+        </a>
+
+
+        <div class="property-content">
+
+
+          <div class="property-meta">
+
+                <span>
+                  {{ property.typeNom }}
+                </span>
+
+            <strong>
+
+              {{
+              formatPrice(
+              property.prix,
+              property.devise
+              )
+              }}
+
+            </strong>
+
+          </div>
+
+
+          <h2>
+
+            <a
+              [routerLink]="[
+                    '/properties',
+                    property.id
+                  ]">
+
+              {{ property.titre }}
+
+            </a>
+
+          </h2>
+
+
+          <p class="location">
+
+            📍
+
+            @if (property.quartier) {
+
+            {{ property.quartier }},
+            }
+
+            {{ property.ville }}
+
+          </p>
+
+
+          <div class="features">
+
+
+            @if (
+            property.chambres > 0
+            ) {
+
+            <span>
+                    {{ property.chambres }}
+                    chambres
+                  </span>
+
+            }
+
+
+            @if (
+            property.sallesBain > 0
+            ) {
+
+            <span>
+                    {{ property.sallesBain }}
+                    salles de bain
+                  </span>
+
+            }
+
+
+            <span>
+
+                  {{ property.superficie }}
+                  m²
+
+                </span>
+
+
+          </div>
+
+
+          <a
+            [routerLink]="[
+                  '/properties',
+                  property.id
+                ]"
+            class="details-link">
+
+            Voir les détails →
+
+          </a>
+
+
+        </div>
+
+
+      </article>
+
+
+      }
+
+
+    </div>
+
+    }
+
+
+  </div>
+
+</section>

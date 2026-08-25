@@ -1,0 +1,938 @@
+<section class="dashboard-page">
+
+  <div class="container">
+
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
+    <header class="dashboard-header">
+
+      <div>
+
+        <span class="eyebrow">
+          ESPACE CLIENT
+        </span>
+
+        <h1>
+          Bonjour {{ currentUser()?.nom }}
+        </h1>
+
+        <p>
+          Retrouvez vos visites,
+          rendez-vous, transactions,
+          documents et paiements avec NovaImmo.
+        </p>
+
+      </div>
+
+
+      <a
+        routerLink="/properties"
+        class="browse-button">
+
+        Explorer les propriétés
+
+      </a>
+
+    </header>
+
+
+    <!-- =========================================
+         STATISTIQUES
+    ========================================== -->
+
+    <section class="stats-grid">
+
+
+      <!-- VISITES -->
+
+      <article class="stat-card">
+
+        <div class="stat-icon">
+          🏠
+        </div>
+
+        <div>
+
+          <span>
+            Mes visites
+          </span>
+
+          <strong>
+            {{ visits.length }}
+          </strong>
+
+        </div>
+
+      </article>
+
+
+      <!-- RENDEZ-VOUS -->
+
+      <article class="stat-card">
+
+        <div class="stat-icon">
+          📅
+        </div>
+
+        <div>
+
+          <span>
+            Rendez-vous
+          </span>
+
+          <strong>
+            {{ appointments.length }}
+          </strong>
+
+        </div>
+
+      </article>
+
+
+      <!-- TRANSACTIONS -->
+
+      <article class="stat-card">
+
+        <div class="stat-icon">
+          🤝
+        </div>
+
+        <div>
+
+          <span>
+            Transactions
+          </span>
+
+          <strong>
+            {{ transactions.length }}
+          </strong>
+
+        </div>
+
+      </article>
+
+
+      <!-- DOCUMENTS -->
+
+      <article class="stat-card">
+
+        <div class="stat-icon">
+          📄
+        </div>
+
+        <div>
+
+          <span>
+            Documents
+          </span>
+
+          <strong>
+            {{ documents.length }}
+          </strong>
+
+        </div>
+
+      </article>
+
+
+      <!-- PAIEMENTS -->
+
+      <article class="stat-card">
+
+        <div class="stat-icon">
+          💳
+        </div>
+
+        <div>
+
+          <span>
+            Paiements
+          </span>
+
+          <strong>
+            {{ payments.length }}
+          </strong>
+
+        </div>
+
+      </article>
+
+
+    </section>
+
+
+    <!-- =========================================
+         ACTIONS RAPIDES
+    ========================================== -->
+
+    <section class="quick-actions">
+
+
+      <a
+        routerLink="/properties"
+        class="action-card">
+
+        <span>
+          🏘️
+        </span>
+
+        <div>
+
+          <strong>
+            Voir les propriétés
+          </strong>
+
+          <small>
+            Explorer le catalogue NovaImmo
+          </small>
+
+        </div>
+
+      </a>
+
+
+      <a
+        routerLink="/appointment"
+        class="action-card">
+
+        <span>
+          📆
+        </span>
+
+        <div>
+
+          <strong>
+            Prendre rendez-vous
+          </strong>
+
+          <small>
+            Rencontrer l'équipe NovaImmo
+          </small>
+
+        </div>
+
+      </a>
+
+
+      <a
+        routerLink="/contact"
+        class="action-card">
+
+        <span>
+          ✉️
+        </span>
+
+        <div>
+
+          <strong>
+            Contacter NovaImmo
+          </strong>
+
+          <small>
+            Poser une question à notre équipe
+          </small>
+
+        </div>
+
+      </a>
+
+
+    </section>
+
+
+    <!-- =========================================
+         VISITES + RENDEZ-VOUS
+    ========================================== -->
+
+    <div class="dashboard-grid">
+
+
+      <!-- =====================================
+           VISITES
+      ====================================== -->
+
+      <section class="panel">
+
+        <div class="panel-header">
+
+          <div>
+
+            <span class="eyebrow">
+              MES VISITES
+            </span>
+
+            <h2>
+              Visites de propriétés
+            </h2>
+
+          </div>
+
+        </div>
+
+
+        @if (loadingVisits) {
+
+        <div class="state">
+          Chargement de vos visites...
+        </div>
+
+        }
+
+        @else if (visitsError) {
+
+        <div class="state error">
+          {{ visitsError }}
+        </div>
+
+        }
+
+        @else if (visits.length === 0) {
+
+        <div class="empty-state">
+
+            <span>
+              🏠
+            </span>
+
+          <h3>
+            Aucune visite pour le moment
+          </h3>
+
+          <p>
+            Découvrez nos propriétés
+            et programmez une visite.
+          </p>
+
+          <a routerLink="/properties">
+            Voir les propriétés
+          </a>
+
+        </div>
+
+        }
+
+        @else {
+
+        <div class="items-list">
+
+          @for (
+          visit of visits;
+          track visit.id
+          ) {
+
+          <article class="item">
+
+            <div class="item-main">
+
+                  <span class="item-label">
+                    {{ visit.propertyReference }}
+                  </span>
+
+              <h3>
+                {{ visit.propertyTitle }}
+              </h3>
+
+              <p>
+                {{
+                visit.dateVisite
+                | date:'dd/MM/yyyy à HH:mm'
+                }}
+              </p>
+
+            </div>
+
+
+            <div class="item-side">
+
+                  <span
+                    [class]="
+                      'status '
+                      + getStatusClass(
+                          visit.statut
+                        )
+                    ">
+
+                    {{
+                      getVisitStatusLabel(
+                        visit.statut
+                      )
+                    }}
+
+                  </span>
+
+            </div>
+
+          </article>
+
+          }
+
+        </div>
+
+        }
+
+      </section>
+
+
+      <!-- =====================================
+           RENDEZ-VOUS
+      ====================================== -->
+
+      <section class="panel">
+
+        <div class="panel-header">
+
+          <div>
+
+            <span class="eyebrow">
+              MON AGENDA
+            </span>
+
+            <h2>
+              Rendez-vous
+            </h2>
+
+          </div>
+
+
+          <a routerLink="/appointment">
+            Nouveau
+          </a>
+
+        </div>
+
+
+        @if (loadingAppointments) {
+
+        <div class="state">
+          Chargement de vos rendez-vous...
+        </div>
+
+        }
+
+        @else if (appointmentsError) {
+
+        <div class="state error">
+          {{ appointmentsError }}
+        </div>
+
+        }
+
+        @else if (appointments.length === 0) {
+
+        <div class="empty-state">
+
+            <span>
+              📅
+            </span>
+
+          <h3>
+            Aucun rendez-vous
+          </h3>
+
+          <p>
+            Vous pouvez organiser
+            une rencontre générale
+            avec NovaImmo.
+          </p>
+
+          <a routerLink="/appointment">
+            Prendre rendez-vous
+          </a>
+
+        </div>
+
+        }
+
+        @else {
+
+        <div class="items-list">
+
+          @for (
+          appointment of appointments;
+          track appointment.id
+          ) {
+
+          <article class="item">
+
+            <div class="item-main">
+
+                  <span class="item-label">
+                    RENDEZ-VOUS #{{ appointment.id }}
+                  </span>
+
+              <h3>
+                {{ appointment.sujet }}
+              </h3>
+
+              <p>
+                {{
+                appointment.dateDebut
+                | date:'dd/MM/yyyy à HH:mm'
+                }}
+              </p>
+
+              <small>
+                📍 {{ appointment.lieu }}
+              </small>
+
+            </div>
+
+
+            <div class="item-side">
+
+                  <span
+                    [class]="
+                      'status '
+                      + getStatusClass(
+                          appointment.statut
+                        )
+                    ">
+
+                    {{
+                      getVisitStatusLabel(
+                        appointment.statut
+                      )
+                    }}
+
+                  </span>
+
+            </div>
+
+          </article>
+
+          }
+
+        </div>
+
+        }
+
+      </section>
+
+
+    </div>
+
+
+    <!-- =========================================
+         TRANSACTIONS + DOCUMENTS
+    ========================================== -->
+
+    <section class="future-grid">
+
+
+      <!-- =====================================
+           TRANSACTIONS
+      ====================================== -->
+
+      <section class="panel transactions-panel">
+
+        <div class="panel-header">
+
+          <div>
+
+            <span class="eyebrow">
+              MES TRANSACTIONS
+            </span>
+
+            <h2>
+              Activité immobilière
+            </h2>
+
+          </div>
+
+        </div>
+
+
+        @if (loadingTransactions) {
+
+        <div class="state">
+          Chargement de vos transactions...
+        </div>
+
+        }
+
+        @else if (transactionsError) {
+
+        <div class="state error">
+          {{ transactionsError }}
+        </div>
+
+        }
+
+        @else if (transactions.length === 0) {
+
+        <div class="empty-state">
+
+            <span>
+              🤝
+            </span>
+
+          <h3>
+            Aucune transaction
+          </h3>
+
+          <p>
+            Vos achats, locations
+            ou autres opérations immobilières
+            apparaîtront ici.
+          </p>
+
+          <a routerLink="/properties">
+            Explorer les propriétés
+          </a>
+
+        </div>
+
+        }
+
+        @else {
+
+        <div class="items-list">
+
+          @for (
+          transaction of transactions;
+          track transaction.id
+          ) {
+
+          <article class="item">
+
+            <div class="item-main">
+
+                  <span class="item-label">
+                    TRANSACTION #{{ transaction.id }}
+                  </span>
+
+              <h3>
+                {{
+                transaction.propertyTitle
+                || transaction.propertyReference
+                || 'Transaction immobilière'
+                }}
+              </h3>
+
+              <p>
+                {{
+                formatAmount(
+                transaction.montant,
+                transaction.devise
+                )
+                }}
+              </p>
+
+              <small>
+                {{ transaction.typeTransaction }}
+              </small>
+
+            </div>
+
+
+            <div class="item-side">
+
+                  <span
+                    [class]="
+                      'status '
+                      + getStatusClass(
+                          transaction.statut
+                        )
+                    ">
+
+                    {{
+                      getTransactionStatusLabel(
+                        transaction.statut
+                      )
+                    }}
+
+                  </span>
+
+            </div>
+
+          </article>
+
+          }
+
+        </div>
+
+        }
+
+      </section>
+
+
+      <!-- =====================================
+           DOCUMENTS
+      ====================================== -->
+
+      <section class="panel documents-panel">
+
+        <div class="panel-header">
+
+          <div>
+
+            <span class="eyebrow">
+              MES DOCUMENTS
+            </span>
+
+            <h2>
+              Documents disponibles
+            </h2>
+
+          </div>
+
+        </div>
+
+
+        @if (loadingDocuments) {
+
+        <div class="state">
+          Chargement de vos documents...
+        </div>
+
+        }
+
+        @else if (documentsError) {
+
+        <div class="state error">
+          {{ documentsError }}
+        </div>
+
+        }
+
+        @else if (documents.length === 0) {
+
+        <div class="empty-state">
+
+            <span>
+              📄
+            </span>
+
+          <h3>
+            Aucun document disponible
+          </h3>
+
+          <p>
+            Vos contrats,
+            reçus, factures
+            et documents liés
+            aux transactions apparaîtront ici.
+          </p>
+
+        </div>
+
+        }
+
+        @else {
+
+        <div class="items-list">
+
+          @for (
+          document of documents;
+          track document.id
+          ) {
+
+          <article class="item">
+
+            <div class="item-main">
+
+                  <span class="item-label">
+                    {{ document.typeDocument }}
+                  </span>
+
+              <h3>
+                {{ document.nomFichier }}
+              </h3>
+
+              <p>
+                {{ document.transactionReference }}
+              </p>
+
+              <small>
+                {{
+                document.createdAt
+                | date:'dd/MM/yyyy'
+                }}
+              </small>
+
+            </div>
+
+
+            <div class="item-side">
+
+              @if (document.fichierUrl) {
+
+              <a
+                [href]="document.fichierUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="document-link">
+
+                Consulter
+
+              </a>
+
+              }
+
+            </div>
+
+          </article>
+
+          }
+
+        </div>
+
+        }
+
+      </section>
+
+
+    </section>
+
+
+    <!-- =========================================
+         PAIEMENTS
+    ========================================== -->
+
+    <section class="payments-section">
+
+      <section class="panel payments-panel">
+
+        <div class="panel-header">
+
+          <div>
+
+            <span class="eyebrow">
+              MES PAIEMENTS
+            </span>
+
+            <h2>
+              Historique des paiements
+            </h2>
+
+          </div>
+
+        </div>
+
+
+        @if (loadingPayments) {
+
+        <div class="state">
+          Chargement de vos paiements...
+        </div>
+
+        }
+
+        @else if (paymentsError) {
+
+        <div class="state error">
+          {{ paymentsError }}
+        </div>
+
+        }
+
+        @else if (payments.length === 0) {
+
+        <div class="empty-state">
+
+            <span>
+              💳
+            </span>
+
+          <h3>
+            Aucun paiement
+          </h3>
+
+          <p>
+            Les paiements associés à vos
+            transactions immobilières
+            apparaîtront ici.
+          </p>
+
+        </div>
+
+        }
+
+        @else {
+
+        <div class="items-list">
+
+          @for (
+          payment of payments;
+          track payment.id
+          ) {
+
+          <article class="item">
+
+            <div class="item-main">
+
+                  <span class="item-label">
+                    {{ payment.reference }}
+                  </span>
+
+              <h3>
+                {{ payment.transactionReference }}
+              </h3>
+
+              <p>
+                {{
+                formatAmount(
+                payment.montant,
+                payment.devise
+                )
+                }}
+              </p>
+
+              <small>
+
+                {{ payment.modePaiement }}
+
+                @if (payment.datePaiement) {
+
+                •
+                {{
+                payment.datePaiement
+                | date:'dd/MM/yyyy à HH:mm'
+                }}
+
+                }
+
+              </small>
+
+            </div>
+
+
+            <div class="item-side">
+
+                  <span
+                    [class]="
+                      'status '
+                      + getStatusClass(
+                          payment.statut
+                        )
+                    ">
+
+                    {{
+                      getPaymentStatusLabel(
+                        payment.statut
+                      )
+                    }}
+
+                  </span>
+
+            </div>
+
+          </article>
+
+          }
+
+        </div>
+
+        }
+
+      </section>
+
+    </section>
+
+
+  </div>
+
+</section>

@@ -1,0 +1,333 @@
+<section class="admin-properties">
+
+  <div class="container">
+
+    <header class="page-header">
+
+      <div>
+
+        <span class="eyebrow">
+          ADMINISTRATION
+        </span>
+
+        <h1>
+          Propriétés
+        </h1>
+
+        <p>
+          Gérez le catalogue immobilier
+          disponible sur NovaImmo.
+        </p>
+
+      </div>
+
+
+      <a
+        routerLink="/admin/properties/new"
+        class="primary-button">
+
+        + Ajouter une propriété
+
+      </a>
+
+    </header>
+
+
+    @if (errorMessage) {
+
+    <div class="alert error">
+
+      {{ errorMessage }}
+
+    </div>
+
+    }
+
+
+    @if (loading) {
+
+    <div class="state">
+
+      Chargement des propriétés...
+
+    </div>
+
+    }
+
+    @else if (properties.length === 0) {
+
+    <div class="state">
+
+      Aucune propriété disponible.
+
+    </div>
+
+    }
+
+    @else {
+
+    <div class="property-grid">
+
+      @for (
+      property of properties;
+      track property.id
+      ) {
+
+      <article class="property-card">
+
+
+        <!-- IMAGE -->
+
+        <div class="property-image">
+
+          @if (property.mainImageUrl) {
+
+          <img
+            [src]="imageUrl(property)"
+            [alt]="property.titre">
+
+          }
+
+          @else {
+
+          <div class="image-placeholder">
+
+            🏠
+
+            <span>
+                    Aucune image
+                  </span>
+
+          </div>
+
+          }
+
+
+          <div class="image-badges">
+
+                <span
+                  class="badge transaction">
+
+                  {{ property.transactionType }}
+
+                </span>
+
+
+            @if (property.featured) {
+
+            <span
+              class="badge featured">
+
+                    ★ Vedette
+
+                  </span>
+
+            }
+
+          </div>
+
+        </div>
+
+
+        <!-- CONTENU -->
+
+        <div class="property-content">
+
+          <div class="property-top">
+
+            <div>
+
+                  <span class="reference">
+
+                    {{ property.reference }}
+
+                  </span>
+
+              <h2>
+
+                {{ property.titre }}
+
+              </h2>
+
+            </div>
+
+
+            <strong class="price">
+
+              {{ formatPrice(property) }}
+
+            </strong>
+
+          </div>
+
+
+          <p class="location">
+
+            📍 {{ getLocation(property) }}
+
+          </p>
+
+
+          <div class="details">
+
+                <span>
+
+                  {{ property.typeNom }}
+
+                </span>
+
+
+            @if (
+            property.chambres != null
+            &&
+            property.chambres > 0
+            ) {
+
+            <span>
+
+                    {{ property.chambres }}
+                    chambres
+
+                  </span>
+
+            }
+
+
+            @if (
+            property.sallesBain != null
+            &&
+            property.sallesBain > 0
+            ) {
+
+            <span>
+
+                    {{ property.sallesBain }}
+                    salles de bain
+
+                  </span>
+
+            }
+
+
+            @if (property.superficie) {
+
+            <span>
+
+                    {{ property.superficie }}
+                    m²
+
+                  </span>
+
+            }
+
+          </div>
+
+
+          <!-- STATUT -->
+
+          <div class="status-row">
+
+            <label>
+
+              Statut
+
+            </label>
+
+
+            <select
+              [value]="property.statut"
+              (change)="changeStatus(
+                    property,
+                    $any($event.target).value
+                  )">
+
+              <option value="DISPONIBLE">
+                Disponible
+              </option>
+
+              <option value="RESERVEE">
+                Réservée
+              </option>
+
+              <option value="VENDUE">
+                Vendue
+              </option>
+
+              <option value="LOUEE">
+                Louée
+              </option>
+
+              <option value="INACTIVE">
+                Inactive
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- ACTIONS -->
+
+          <div class="actions">
+
+            <a
+              [routerLink]="[
+                    '/admin/properties',
+                    property.id,
+                    'edit'
+                  ]"
+              class="action-button">
+
+              Modifier
+
+            </a>
+
+
+            <a
+              [routerLink]="[
+                    '/admin/properties',
+                    property.id,
+                    'images'
+                  ]"
+              class="action-button">
+
+              Images
+
+            </a>
+
+
+            <button
+              type="button"
+              class="action-button featured-button"
+              [class.active]="property.featured"
+              (click)="toggleFeatured(property)">
+
+              @if (property.featured) {
+
+              ★ Retirer vedette
+
+              }
+
+              @else {
+
+              ☆ Mettre en vedette
+
+              }
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </article>
+
+      }
+
+    </div>
+
+    }
+
+  </div>
+
+</section>

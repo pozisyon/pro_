@@ -1,0 +1,366 @@
+<section class="appointment-page">
+
+  <div class="container">
+
+    <div class="appointment-grid">
+
+
+      <!-- INFORMATIONS -->
+
+      <aside class="appointment-info">
+
+        <span class="section-label">
+          RENDEZ-VOUS NOVAIMMO
+        </span>
+
+        <h1>
+          Parlons de votre
+          projet immobilier.
+        </h1>
+
+        <p class="intro">
+
+          Vous souhaitez acheter,
+          vendre, investir, présenter
+          un terrain ou discuter d'un
+          partenariat ?
+
+          Prenez rendez-vous avec
+          l'équipe NovaImmo à Jacmel.
+
+        </p>
+
+
+        <div class="appointment-types">
+
+          <div>
+
+            <strong>
+              01
+            </strong>
+
+            <span>
+              Conseil immobilier
+            </span>
+
+          </div>
+
+
+          <div>
+
+            <strong>
+              02
+            </strong>
+
+            <span>
+              Projet d'investissement
+            </span>
+
+          </div>
+
+
+          <div>
+
+            <strong>
+              03
+            </strong>
+
+            <span>
+              Présentation d'un terrain
+            </span>
+
+          </div>
+
+
+          <div>
+
+            <strong>
+              04
+            </strong>
+
+            <span>
+              Partenariat immobilier
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="office">
+
+          <small>
+            SIÈGE SOCIAL
+          </small>
+
+          <strong>
+            NovaImmo
+          </strong>
+
+          <p>
+            Jacmel, Sud-Est
+            <br>
+            Haïti
+          </p>
+
+        </div>
+
+      </aside>
+
+
+
+      <!-- FORMULAIRE -->
+
+      <div class="appointment-card">
+
+        <span class="section-label">
+          DEMANDE DE RENDEZ-VOUS
+        </span>
+
+        <h2>
+          Planifiez une rencontre.
+        </h2>
+
+        <p class="form-intro">
+
+          Remplissez le formulaire.
+          Notre équipe pourra ensuite
+          confirmer ou reporter
+          le rendez-vous.
+
+        </p>
+
+
+        @if (successMessage) {
+
+        <div class="success-message">
+          {{ successMessage }}
+        </div>
+
+        }
+
+
+        @if (errorMessage) {
+
+        <div class="error-message">
+          {{ errorMessage }}
+        </div>
+
+        }
+
+
+        <form
+          [formGroup]="appointmentForm"
+          (ngSubmit)="submit()">
+
+
+          <div class="form-group">
+
+            <label for="nomContact">
+              Nom complet *
+            </label>
+
+            <input
+              id="nomContact"
+              type="text"
+              formControlName="nomContact"
+              placeholder="Votre nom complet">
+
+            @if (
+            appointmentForm.controls.nomContact.touched &&
+            appointmentForm.controls.nomContact.invalid
+            ) {
+
+            <small class="field-error">
+              Le nom est obligatoire.
+            </small>
+
+            }
+
+          </div>
+
+
+          <div class="form-row">
+
+            <div class="form-group">
+
+              <label for="email">
+                Email *
+              </label>
+
+              <input
+                id="email"
+                type="email"
+                formControlName="email"
+                placeholder="email@example.com">
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="telephone">
+                Téléphone *
+              </label>
+
+              <input
+                id="telephone"
+                type="tel"
+                formControlName="telephone"
+                placeholder="+509 ...">
+
+            </div>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="sujet">
+              Sujet *
+            </label>
+
+            <select
+              id="sujet"
+              formControlName="sujet">
+
+              <option value="">
+                Choisir un sujet
+              </option>
+
+              <option value="Consultation immobilière">
+                Consultation immobilière
+              </option>
+
+              <option value="Achat d'une propriété">
+                Achat d'une propriété
+              </option>
+
+              <option value="Vente d'une propriété">
+                Vente d'une propriété
+              </option>
+
+              <option value="Projet d'investissement">
+                Projet d'investissement
+              </option>
+
+              <option value="Présentation d'un terrain">
+                Présentation d'un terrain
+              </option>
+
+              <option value="Partenariat">
+                Partenariat
+              </option>
+
+              <option value="Autre">
+                Autre
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="form-row">
+
+            <div class="form-group">
+
+              <label for="dateDebut">
+                Date et heure *
+              </label>
+
+              <input
+                id="dateDebut"
+                type="datetime-local"
+                formControlName="dateDebut">
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="dateFin">
+                Fin souhaitée
+              </label>
+
+              <input
+                id="dateFin"
+                type="datetime-local"
+                formControlName="dateFin">
+
+            </div>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="lieu">
+              Lieu
+            </label>
+
+            <select
+              id="lieu"
+              formControlName="lieu">
+
+              <option value="Bureau NovaImmo - Jacmel">
+                Bureau NovaImmo - Jacmel
+              </option>
+
+              <option value="Visioconférence">
+                Visioconférence
+              </option>
+
+              <option value="Autre">
+                Autre lieu
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="notes">
+              Message / précisions
+            </label>
+
+            <textarea
+              id="notes"
+              rows="6"
+              formControlName="notes"
+              placeholder="Présentez brièvement votre besoin...">
+            </textarea>
+
+          </div>
+
+
+          <button
+            type="submit"
+            class="submit-button"
+            [disabled]="submitting">
+
+            @if (submitting) {
+
+            Envoi en cours...
+
+            }
+
+            @else {
+
+            Demander le rendez-vous
+
+            }
+
+          </button>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>

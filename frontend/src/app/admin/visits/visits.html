@@ -1,0 +1,220 @@
+<section class="admin-visits-page">
+
+  <div class="container">
+
+
+    <header class="page-header">
+
+      <div>
+
+        <span class="eyebrow">
+          ADMINISTRATION
+        </span>
+
+        <h1>
+          Gestion des visites
+        </h1>
+
+        <p>
+          Consultez les demandes
+          et assignez-les aux agents.
+        </p>
+
+      </div>
+
+
+      <a
+        routerLink="/admin"
+        class="back-button">
+
+        Retour dashboard
+
+      </a>
+
+    </header>
+
+
+    @if (successMessage) {
+
+    <div class="message success">
+      {{ successMessage }}
+    </div>
+
+    }
+
+
+    @if (errorMessage) {
+
+    <div class="message error">
+      {{ errorMessage }}
+    </div>
+
+    }
+
+
+    @if (loading) {
+
+    <div class="state">
+      Chargement des visites...
+    </div>
+
+    }
+
+    @else if (visits.length === 0) {
+
+    <div class="state">
+      Aucune visite disponible.
+    </div>
+
+    }
+
+    @else {
+
+    <section class="visits-list">
+
+
+      @for (
+      visit of visits;
+      track visit.id
+      ) {
+
+      <article class="visit-card">
+
+
+        <div class="visit-main">
+
+              <span class="reference">
+                {{ visit.propertyReference }}
+              </span>
+
+
+          <h2>
+            {{ visit.propertyTitle }}
+          </h2>
+
+
+          <p class="visitor">
+
+            {{ visit.nomVisiteur }}
+            •
+            {{ visit.email }}
+
+          </p>
+
+
+          <div class="visit-details">
+
+                <span>
+                  📅
+                  {{
+                    visit.dateVisite
+                    | date:'dd/MM/yyyy à HH:mm'
+                  }}
+                </span>
+
+            <span>
+                  👥
+                  {{ visit.nombrePersonnes }}
+                </span>
+
+          </div>
+
+
+          @if (visit.commentaire) {
+
+          <p class="comment">
+            {{ visit.commentaire }}
+          </p>
+
+          }
+
+        </div>
+
+
+        <div class="visit-actions">
+
+
+              <span
+                [class]="
+                  'status '
+                  + getStatusClass(
+                      visit.statut
+                    )
+                ">
+
+                {{ visit.statut }}
+
+              </span>
+
+
+          <p class="current-agent">
+
+            Agent actuel :
+
+            <strong>
+              {{
+              getAgentName(
+              visit.agentId
+              )
+              }}
+            </strong>
+
+          </p>
+
+
+          <select
+            [(ngModel)]="
+                  selectedAgents[visit.id]
+                ">
+
+            <option
+              [ngValue]="null">
+
+              Choisir un agent
+
+            </option>
+
+
+            @for (
+            agent of agents;
+            track agent.id
+            ) {
+
+            <option
+              [ngValue]="agent.id">
+
+              {{ agent.prenom }}
+              {{ agent.nom }}
+
+            </option>
+
+            }
+
+          </select>
+
+
+          <button
+            type="button"
+            (click)="assignAgent(visit)">
+
+            Assigner
+
+          </button>
+
+
+        </div>
+
+
+      </article>
+
+      }
+
+
+    </section>
+
+    }
+
+
+  </div>
+
+</section>

@@ -1,0 +1,413 @@
+<section class="agent-visits-page">
+
+  <div class="container">
+
+    <!-- =====================================================
+         EN-TÊTE
+    ====================================================== -->
+
+    <header class="page-header">
+
+      <div>
+
+        <span class="eyebrow">
+          ESPACE AGENT
+        </span>
+
+        <h1>
+          Mes visites
+        </h1>
+
+        <p>
+          Consultez et gérez les visites immobilières
+          qui vous ont été assignées.
+        </p>
+
+      </div>
+
+
+      <a
+        routerLink="/agent"
+        class="back-button">
+
+        Retour au dashboard
+
+      </a>
+
+    </header>
+
+
+    <!-- =====================================================
+         CHARGEMENT
+    ====================================================== -->
+
+    @if (loading) {
+
+    <div class="state">
+
+      <p>
+        Chargement des visites...
+      </p>
+
+    </div>
+
+    }
+
+
+    <!-- =====================================================
+         ERREUR
+    ====================================================== -->
+
+    @else if (errorMessage) {
+
+    <div class="state error">
+
+      <p>
+        {{ errorMessage }}
+      </p>
+
+      <button
+        type="button"
+        class="retry-button"
+        (click)="loadVisits()">
+
+        Réessayer
+
+      </button>
+
+    </div>
+
+    }
+
+
+    <!-- =====================================================
+         AUCUNE VISITE
+    ====================================================== -->
+
+    @else if (visits.length === 0) {
+
+    <div class="state empty-state">
+
+      <h2>
+        Aucune visite
+      </h2>
+
+      <p>
+        Aucune visite ne vous est actuellement assignée.
+      </p>
+
+    </div>
+
+    }
+
+
+    <!-- =====================================================
+         LISTE DES VISITES
+    ====================================================== -->
+
+    @else {
+
+    <div class="visits-summary">
+
+        <span>
+          {{ visits.length }}
+          visite(s) assignée(s)
+        </span>
+
+    </div>
+
+
+    <section class="visits-list">
+
+      @for (
+      visit of visits;
+      track visit.id
+      ) {
+
+      <article class="visit-card">
+
+
+        <!-- =============================================
+             EN-TÊTE DE LA CARTE
+        ============================================== -->
+
+        <div class="visit-card-header">
+
+          <div>
+
+                <span class="reference">
+                  {{ visit.propertyReference }}
+                </span>
+
+            <h2>
+              {{ visit.propertyTitle }}
+            </h2>
+
+          </div>
+
+
+          <span
+            class="status"
+            [class.status-requested]="
+                  visit.statut === 'DEMANDEE'
+                "
+            [class.status-confirmed]="
+                  visit.statut === 'CONFIRMEE'
+                "
+            [class.status-completed]="
+                  visit.statut === 'EFFECTUEE'
+                "
+            [class.status-cancelled]="
+                  visit.statut === 'ANNULEE'
+                ">
+
+                {{
+                  getStatusLabel(
+                    visit.statut
+                  )
+                }}
+
+              </span>
+
+        </div>
+
+
+        <!-- =============================================
+             INFORMATIONS VISITE
+        ============================================== -->
+
+        <div class="visit-details">
+
+          <div class="detail-item">
+
+                <span class="detail-label">
+                  Client
+                </span>
+
+            <strong>
+              {{ visit.nomVisiteur }}
+            </strong>
+
+          </div>
+
+
+          <div class="detail-item">
+
+                <span class="detail-label">
+                  Date de visite
+                </span>
+
+            <strong>
+
+              {{
+              visit.dateVisite
+              | date:'dd/MM/yyyy à HH:mm'
+              }}
+
+            </strong>
+
+          </div>
+
+
+          <div class="detail-item">
+
+                <span class="detail-label">
+                  Téléphone
+                </span>
+
+            <strong>
+              {{ visit.telephone }}
+            </strong>
+
+          </div>
+
+
+          <div class="detail-item">
+
+                <span class="detail-label">
+                  Courriel
+                </span>
+
+            <strong>
+              {{ visit.email }}
+            </strong>
+
+          </div>
+
+
+          <div class="detail-item">
+
+                <span class="detail-label">
+                  Nombre de personnes
+                </span>
+
+            <strong>
+              {{ visit.nombrePersonnes }}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <!-- =============================================
+             COMMENTAIRE
+        ============================================== -->
+
+        @if (visit.commentaire) {
+
+        <div class="visit-comment">
+
+                <span class="detail-label">
+                  Commentaire
+                </span>
+
+          <p>
+            {{ visit.commentaire }}
+          </p>
+
+        </div>
+
+        }
+
+
+        <!-- =============================================
+             ACTIONS
+        ============================================== -->
+
+        <div class="visit-actions">
+
+
+          <!-- VISITE DEMANDÉE -->
+
+          @if (
+          visit.statut === 'DEMANDEE'
+          ) {
+
+          <button
+            type="button"
+            class="confirm-button"
+            (click)="
+                    updateStatus(
+                      visit,
+                      'CONFIRMEE'
+                    )
+                  ">
+
+            Confirmer la visite
+
+          </button>
+
+          }
+
+
+          <!-- VISITE CONFIRMÉE -->
+
+          @if (
+          visit.statut === 'CONFIRMEE'
+          ) {
+
+          <button
+            type="button"
+            class="complete-button"
+            (click)="
+                    updateStatus(
+                      visit,
+                      'EFFECTUEE'
+                    )
+                  ">
+
+            Marquer comme effectuée
+
+          </button>
+
+          }
+
+
+          <!-- ANNULATION -->
+
+          @if (
+          visit.statut !== 'EFFECTUEE'
+          &&
+          visit.statut !== 'ANNULEE'
+          ) {
+
+          <button
+            type="button"
+            class="cancel-button"
+            (click)="
+                    updateStatus(
+                      visit,
+                      'ANNULEE'
+                    )
+                  ">
+
+            Annuler
+
+          </button>
+
+          }
+
+
+          <!-- VISITE TERMINÉE -->
+
+          @if (
+          visit.statut === 'EFFECTUEE'
+          ) {
+
+          <div class="final-status completed-message">
+
+            Visite effectuée
+
+          </div>
+
+          }
+
+
+          <!-- VISITE ANNULÉE -->
+
+          @if (
+          visit.statut === 'ANNULEE'
+          ) {
+
+          <div class="final-status cancelled-message">
+
+            Visite annulée
+
+          </div>
+
+          }
+
+        </div>
+
+
+        <!-- =============================================
+             INFORMATIONS TECHNIQUES
+        ============================================== -->
+
+        <footer class="visit-footer">
+
+              <span>
+                Visite #{{ visit.id }}
+              </span>
+
+          <span>
+                {{
+                  visit.createdAt
+                    | date:'dd/MM/yyyy'
+                }}
+              </span>
+
+        </footer>
+
+      </article>
+
+      }
+
+    </section>
+
+    }
+
+  </div>
+
+</section>

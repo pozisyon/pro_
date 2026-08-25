@@ -1,0 +1,230 @@
+<header class="navbar">
+
+  <div class="container navbar-inner">
+
+    <!-- =====================================
+         LOGO
+    ====================================== -->
+
+    <a
+      routerLink="/"
+      class="logo"
+      (click)="closeMenu()">
+
+      NOVA<span>IMMO</span>
+
+    </a>
+
+
+    <!-- =====================================
+         BOUTON MENU MOBILE
+    ====================================== -->
+
+    <button
+      type="button"
+      class="menu-button"
+      aria-label="Ouvrir le menu"
+      (click)="toggleMenu()">
+
+      <span></span>
+      <span></span>
+      <span></span>
+
+    </button>
+
+
+    <!-- =====================================
+         NAVIGATION
+    ====================================== -->
+
+    <nav
+      class="nav-links"
+      [class.open]="menuOpen">
+
+
+      <a
+        routerLink="/"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="closeMenu()">
+
+        Accueil
+
+      </a>
+
+
+      <a
+        routerLink="/properties"
+        routerLinkActive="active"
+        (click)="closeMenu()">
+
+        Propriétés
+
+      </a>
+
+
+      <a
+        routerLink="/projects"
+        routerLinkActive="active"
+        (click)="closeMenu()">
+
+        Projets
+
+      </a>
+
+
+      <a
+        routerLink="/contact"
+        routerLinkActive="active"
+        (click)="closeMenu()">
+
+        Contact
+
+      </a>
+
+
+      <a
+        routerLink="/appointment"
+        routerLinkActive="active"
+        (click)="closeMenu()">
+
+        Rendez-vous
+
+      </a>
+
+
+      <!-- =====================================
+           UTILISATEUR CONNECTÉ
+      ====================================== -->
+
+      @if (isAuthenticated()) {
+
+      <div class="user-area">
+
+
+        <!-- NOM UTILISATEUR -->
+
+        @if (currentUser()) {
+
+        <span class="user-name">
+
+              {{ currentUser()?.nom }}
+
+            </span>
+
+        }
+
+
+        <!-- CLIENT -->
+
+        @if (currentUser()?.role === 'CLIENT') {
+
+        <a
+          routerLink="/client"
+          routerLinkActive="active"
+          class="account-link"
+          (click)="closeMenu()">
+
+          Mon espace
+
+        </a>
+
+        }
+
+
+        <!-- AGENT -->
+
+        @if (currentUser()?.role === 'AGENT') {
+
+        <a
+          routerLink="/agent"
+          routerLinkActive="active"
+          class="account-link"
+          (click)="closeMenu()">
+
+          Espace agent
+
+        </a>
+
+        }
+
+
+        <!-- ADMIN -->
+
+        @if (currentUser()?.role === 'ADMIN') {
+
+        <a
+          routerLink="/admin"
+          routerLinkActive="active"
+          class="account-link"
+          (click)="closeMenu()">
+
+          Administration
+
+        </a>
+
+        }
+
+
+        <!-- DÉCONNEXION -->
+
+        <button
+          type="button"
+          class="logout-link"
+          (click)="logout()">
+
+          Déconnexion
+
+        </button>
+
+
+      </div>
+
+      }
+
+
+      <!-- =====================================
+           UTILISATEUR NON CONNECTÉ
+      ====================================== -->
+
+      @else {
+
+      <div class="auth-links">
+
+
+        <!-- INSCRIPTION -->
+
+        <a
+          routerLink="/register"
+          routerLinkActive="active"
+          class="register-link"
+          (click)="closeMenu()">
+
+          Créer un compte
+
+        </a>
+
+
+        <!-- CONNEXION -->
+
+        <a
+          routerLink="/login"
+          routerLinkActive="active"
+          class="login-link"
+          (click)="closeMenu()">
+
+          Connexion
+
+        </a>
+
+
+      </div>
+
+      }
+
+
+    </nav>
+
+  </div>
+
+</header>
