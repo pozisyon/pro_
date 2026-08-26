@@ -13,6 +13,9 @@ import {
 import {
   PropertyImages
 } from './admin/property-images/property-images';
+
+import { Calendar } from './admin/calendar/calendar';
+
 /* =========================================================
    PUBLIC
 ========================================================= */
@@ -425,7 +428,19 @@ export const routes: Routes = [
       ]
     }
   },
+  {
+    path: 'admin/calendar',
+    component: Calendar,
+    canActivate: [
+      authGuard,
+      roleGuard
+    ],
 
+    data: {
+      roles: ['ADMIN']
+    }
+
+  },
   {
     path: 'admin/properties/:id/images',
 

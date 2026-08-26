@@ -49,4 +49,12 @@ export class VisitService {
       `${this.apiUrl}/visits/me`
     );
   }
+  findAll(): Observable<PropertyVisitResponse[]> {
+
+    return this.http.get<PropertyVisitResponse[]>(
+        this.apiUrl
+    );
+
+  }
+
 }

@@ -1,0 +1,41 @@
+<div class="calendar-container">
+
+    <div *ngIf="loading" class="loading-spinner">
+        Chargement du calendrier...
+    </div>
+
+    <full-calendar [options]="calendarOptions"></full-calendar>
+
+    <!-- MODALE DE DÉTAILS -->
+    <div class="modal-backdrop" *ngIf="selectedEvent" (click)="closeModal()">
+        <div class="modal-card" (click)="$event.stopPropagation()">
+
+            <header class="modal-header" [style.background-color]="selectedEvent.color">
+                <h3>{{ selectedEvent.title }}</h3>
+                <button type="button" class="close-btn" (click)="closeModal()">✕</button>
+            </header>
+
+            <div class="modal-body">
+                <p><strong>Type :</strong> {{ selectedEvent.type === 'VISIT' ? 'Visite immobilière' : 'Rendez-vous' }}</p>
+                <p><strong>Date & Heure :</strong> {{ selectedEvent.start | date:'dd/MM/yyyy HH:mm' }}</p>
+                <p><strong>Statut :</strong> <span class="badge">{{ selectedEvent.status }}</span></p>
+
+                <!-- Détails spécifiques selon le type -->
+                <ng-container *ngIf="selectedEvent.type === 'VISIT'">
+                    <p *ngIf="selectedEvent.data?.clientNom"><strong>Client :</strong> {{ selectedEvent.data.clientNom }}</p>
+                    <p *ngIf="selectedEvent.data?.agentNom"><strong>Agent :</strong> {{ selectedEvent.data.agentNom }}</p>
+                </ng-container>
+
+                <ng-container *ngIf="selectedEvent.type === 'APPOINTMENT'">
+                    <p *ngIf="selectedEvent.data?.description"><strong>Description :</strong> {{ selectedEvent.data.description }}</p>
+                </ng-container>
+            </div>
+
+            <footer class="modal-footer">
+                <button type="button" class="btn-secondary" (click)="closeModal()">Fermer</button>
+            </footer>
+
+        </div>
+    </div>
+
+</div>

@@ -18,6 +18,7 @@ import {
 import {environment} from "../../../environments/environment";
 
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -47,5 +48,12 @@ export class AppointmentService {
     return this.http.get<AppointmentResponse[]>(
       `${this.apiUrl}/me`
     );
+  }
+  findAll(): Observable<AppointmentResponse[]> {
+
+    return this.http.get<AppointmentResponse[]>(
+        this.apiUrl
+    );
+
   }
 }
